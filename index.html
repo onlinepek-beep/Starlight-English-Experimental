@@ -1650,22 +1650,27 @@ function addWord(id){ if(!editor.wordIds.includes(id)) editor.wordIds.push(id); 
 let editorSearchToken = 0;
 window.pendingGoogleWord = null;
 
+function sourceLabel(w){
+  if(w.source === 'Google') return '⭐ Мои слова';
+  if(w.source && w.source !== 'Starlight 6') return '🌐 ' + w.source;
+  return '📘 Starlight 6';
+}
+
 function renderLocalEditorResults(items){
   items = items.slice(0,120);
-  $('editor-found').textContent = 'Наш словарь: ' + items.length + (items.length===120?'+':'');
+  $('editor-found').textContent = 'Найдено в словаре: ' + items.length + (items.length===120?'+':'');
   const box = $('editor-results');
   if(!items.length) return false;
   box.innerHTML = items.map(w=>{
     const inL = editor.wordIds.includes(w.id);
     const id = String(w.id).replace(/'/g, "\\'");
     return '<div class="chosen-item">' +
-      '<div class="t"><b>' + esc(w.english) + ' ' + (w.partOfSpeech ? '<span class="muted">' + esc(w.partOfSpeech) + '</span>' : '') + '</b><span>' + esc(w.translation||'—') + '</span></div>' +
+      '<div class="t"><b>' + esc(w.english) + ' ' + (w.partOfSpeech ? '<span class="muted">' + esc(w.partOfSpeech) + '</span>' : '') + '</b><span>' + esc(w.translation||'—') + '</span><small class="muted" style="display:block;margin-top:5px;">' + sourceLabel(w) + '</small></div>' +
       '<button class="icon-btn" ' + (inL?'disabled':'') + ' onclick="addWord(\'' + id + '\')" style="' + (inL?'background:rgba(48,209,88,.2); color:var(--green);':'') + '">' + (inL?'✓':'＋') + '</button>' +
       '</div>';
   }).join('');
   return true;
 }
-
 async function searchGoogleWord(query, token){
   const box = $('editor-results');
   const clean = query.trim();
@@ -1692,7 +1697,7 @@ async function searchGoogleWord(query, token){
     }
 
     window.pendingGoogleWord = { english:clean, translation:translated };
-    $('editor-found').textContent = 'Наш словарь: 0 · Google: 1';
+    $('editor-found').textContent = 'В нашем словаре: 0 · Google: 1';
     box.innerHTML =
       '<div class="google-result">' +
         '<div class="google-source">🌐 Google</div>' +
