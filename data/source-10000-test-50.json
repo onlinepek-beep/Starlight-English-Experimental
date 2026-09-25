@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "english": "the",
+    "translation": "указывает на уже упоминавшийся, известный, конкретный либо единственный в своём роде объект",
+    "transcription": "[ðə]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 1
+  },
+  {
+    "id": 2,
+    "english": "of",
+    "translation": "указывает на отношение принадлежности, на «владельца», того, кому что-либо принадлежит",
+    "transcription": "[ɒv]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 2
+  },
+  {
+    "id": 3,
+    "english": "and",
+    "translation": "и, да, а",
+    "transcription": "[ænd]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 3
+  },
+  {
+    "id": 4,
+    "english": "to",
+    "translation": "к, по направлению к",
+    "transcription": "[tu̟ː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 4
+  },
+  {
+    "id": 5,
+    "english": "a",
+    "translation": "неопределённый артикль, может либо переводиться словами один, некий, либо опускаться при переводе на русский язык",
+    "transcription": "[ə]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 5
+  },
+  {
+    "id": 6,
+    "english": "in",
+    "translation": "в",
+    "transcription": "[ən]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 6
+  },
+  {
+    "id": 7,
+    "english": "for",
+    "translation": "для, ради",
+    "transcription": "[fɔː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 7
+  },
+  {
+    "id": 8,
+    "english": "is",
+    "translation": "есть (3-е л. ед. ч., глагол to be)",
+    "transcription": "[ɪz]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 8
+  },
+  {
+    "id": 9,
+    "english": "on",
+    "translation": "на",
+    "transcription": "[ɒn]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 9
+  },
+  {
+    "id": 10,
+    "english": "that",
+    "translation": "тот; та; то; что (союз)",
+    "transcription": "[ðət]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 10
+  },
+  {
+    "id": 11,
+    "english": "by",
+    "translation": "около, у",
+    "transcription": "[baɪ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 11
+  },
+  {
+    "id": 12,
+    "english": "this",
+    "translation": "этот; эта; это; эти",
+    "transcription": "[ðɪs]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 12
+  },
+  {
+    "id": 13,
+    "english": "with",
+    "translation": "с",
+    "transcription": "[wɪð]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 13
+  },
+  {
+    "id": 14,
+    "english": "i",
+    "translation": "ай, и",
+    "transcription": "[ə]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 14
+  },
+  {
+    "id": 15,
+    "english": "you",
+    "translation": "вас, вам, вами",
+    "transcription": "[juː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 15
+  },
+  {
+    "id": 16,
+    "english": "it",
+    "translation": "оно; это",
+    "transcription": "[ɪt]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 16
+  },
+  {
+    "id": 17,
+    "english": "not",
+    "translation": "не",
+    "transcription": "[nɒt]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 17
+  },
+  {
+    "id": 18,
+    "english": "or",
+    "translation": "или brethren, sisters, father, mother, wife, children, lands, for my name's sake, shall receive an hundredfold, and shall inherit everlasting life.|перевод=И всякий, кто оставит…",
+    "transcription": "[ɔː(ɹ)]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 18
+  },
+  {
+    "id": 19,
+    "english": "be",
+    "translation": "быть",
+    "transcription": "[biː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 19
+  },
+  {
+    "id": 20,
+    "english": "are",
+    "translation": "ар",
+    "transcription": "[ɛə]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 20
+  },
+  {
+    "id": 21,
+    "english": "from",
+    "translation": "из, от, с",
+    "transcription": "[fɹɒm]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 21
+  },
+  {
+    "id": 22,
+    "english": "at",
+    "translation": "в, на, у, возле",
+    "transcription": "[æt]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 22
+  },
+  {
+    "id": 23,
+    "english": "as",
+    "translation": "как, так, настолько, столь",
+    "transcription": "[əz]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 23
+  },
+  {
+    "id": 24,
+    "english": "your",
+    "translation": "ваш",
+    "transcription": "[jɔː(ɹ)]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 24
+  },
+  {
+    "id": 25,
+    "english": "all",
+    "translation": "весь, целый, всё",
+    "transcription": "[ɔːl]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 25
+  },
+  {
+    "id": 26,
+    "english": "have",
+    "translation": "иметь",
+    "transcription": "[hæv]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 26
+  },
+  {
+    "id": 27,
+    "english": "new",
+    "translation": "новый",
+    "transcription": "[njuː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 27
+  },
+  {
+    "id": 28,
+    "english": "more",
+    "translation": "больше",
+    "transcription": "[mɔː(ɹ)]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 28
+  },
+  {
+    "id": 29,
+    "english": "an",
+    "translation": "вариант неопределённого артикля a перед существительными, начинающимися с гласного звука",
+    "transcription": "[ˈæn]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 29
+  },
+  {
+    "id": 30,
+    "english": "was",
+    "translation": "был, была, было (прош. вр. to be)",
+    "transcription": "[wəz]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 30
+  },
+  {
+    "id": 31,
+    "english": "we",
+    "translation": "мы",
+    "transcription": "[wiː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 31
+  },
+  {
+    "id": 32,
+    "english": "will",
+    "translation": "желать, пожелать",
+    "transcription": "[wɪɫ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 32
+  },
+  {
+    "id": 33,
+    "english": "home",
+    "translation": "дом",
+    "transcription": "[həʊm]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 33
+  },
+  {
+    "id": 34,
+    "english": "can",
+    "translation": "мочь, смочь, уметь, быть в состоянии",
+    "transcription": "[kən]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 34
+  },
+  {
+    "id": 35,
+    "english": "us",
+    "translation": "нас, нам, нами",
+    "transcription": "[əs]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 35
+  },
+  {
+    "id": 36,
+    "english": "about",
+    "translation": "кругом, вокруг, повсюду",
+    "transcription": "[əˈbaʊ̯t]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 36
+  },
+  {
+    "id": 37,
+    "english": "if",
+    "translation": "если, если бы thou be the Son of God, command that these stones be made bread.|перевод=И приступил к Нему искуситель и сказал: Ты Сын Божий, скажи, чтобы камни сии сделались хле…",
+    "transcription": "[ɪf]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 37
+  },
+  {
+    "id": 38,
+    "english": "page",
+    "translation": "страница",
+    "transcription": "[peɪd͡ʒ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 38
+  },
+  {
+    "id": 39,
+    "english": "my",
+    "translation": "мой, моя, моё, мои",
+    "transcription": "[mɪ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 39
+  },
+  {
+    "id": 40,
+    "english": "has",
+    "translation": "будет",
+    "transcription": "[hæz]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 40
+  },
+  {
+    "id": 41,
+    "english": "search",
+    "translation": "искать, поискать, разыскивать, вести поиск",
+    "transcription": "[sɜːt͡ʃ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 41
+  },
+  {
+    "id": 42,
+    "english": "free",
+    "translation": "свободный, вольный",
+    "transcription": "[fɹiː]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 42
+  },
+  {
+    "id": 43,
+    "english": "but",
+    "translation": "но, только, хотя, хоть",
+    "transcription": "[ˈbʌt]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 43
+  },
+  {
+    "id": 44,
+    "english": "our",
+    "translation": "наш",
+    "transcription": "[ˈaʊə(ɹ)]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 44
+  },
+  {
+    "id": 45,
+    "english": "one",
+    "translation": "один reason will do|перевод=ни соображение не удовлетворит (нас)}}",
+    "transcription": "[wʌn]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 45
+  },
+  {
+    "id": 46,
+    "english": "other",
+    "translation": "другой, иной",
+    "transcription": "[ˈʌðə]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 46
+  },
+  {
+    "id": 47,
+    "english": "do",
+    "translation": "делать the homework.|перевод=Я домашнее задание.}}",
+    "transcription": "[də]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 47
+  },
+  {
+    "id": 48,
+    "english": "no",
+    "translation": "нет",
+    "transcription": "[nəʊ]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 48
+  },
+  {
+    "id": 49,
+    "english": "information",
+    "translation": "информация, сообщение, сведение",
+    "transcription": "[ˌɪn.fəˈmeɪ.ʃn̩]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 49
+  },
+  {
+    "id": 50,
+    "english": "time",
+    "translation": "хронометрировать",
+    "transcription": "[taɪm]",
+    "source": "Англо-русский 10 000",
+    "sourceId": 50
+  }
+]
