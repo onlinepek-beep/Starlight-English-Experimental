@@ -216,6 +216,9 @@
   .word .en{font-weight:700; font-size:17px;}
   .word .pos{color:var(--ink2); font-size:13px; margin-left:6px;}
   .word .ru{color:var(--ink2); font-size:15px; margin-top:2px;}
+  .word .transcription{color:var(--ink3); font-size:13px; margin-top:2px;}
+  .word .source-badge{display:inline-block; margin-top:6px; padding:3px 8px; border-radius:999px; background:rgba(10,132,255,.14); color:var(--blue); font-size:12px; font-weight:600;}
+  .word .source-badge.external{background:rgba(255,159,10,.14); color:var(--orange);}
   .word .txt{flex:1; min-width:0;}
   .speak{
     background:var(--card2); border-radius:50%; width:44px; height:44px;
@@ -1104,6 +1107,22 @@ async function loadVocabulary(){
   window.VOCAB_DATA = vocabulary;
 }
 
+async function loadExternalVocabulary(){
+  const response = await fetch('./data/source-10000-test-50.json', { cache: 'no-cache' });
+  if(!response.ok){ throw new Error('Не удалось загрузить тестовый внешний словарь'); }
+  const vocabulary = await response.json();
+  if(!Array.isArray(vocabulary)){ throw new Error('source-10000-test-50.json должен содержать массив слов'); }
+
+  EXTERNAL_WORDS = vocabulary.map((w, index) => ({
+    ...w,
+    id: 'ext-' + (w.sourceId || index + 1),
+    letter: String(w.english || '').trim().charAt(0).toUpperCase(),
+    source: w.source || 'Англо-русский 10 000'
+  }));
+  EXTERNAL_WORDS_BY_ID = {};
+  EXTERNAL_WORDS.forEach(w => { EXTERNAL_WORDS_BY_ID[w.id] = w; });
+}
+
 /* ================= УТИЛИТЫ ================= */
 const $ = id => document.getElementById(id);
 const qsa = (s, r=document) => Array.from(r.querySelectorAll(s));
@@ -1178,6 +1197,8 @@ function stopSpeech(){
 
 let WORDS = [];
 let WORDS_BY_ID = {};
+let EXTERNAL_WORDS = [];
+let EXTERNAL_WORDS_BY_ID = {};
 let lessons = [];
 let state = { screen:'menu', activeLessonId:null, editingLessonId:null, exercise:null };
 let progress = {};
@@ -1362,20 +1383,31 @@ function renderVocab(){
     if(!eggShownForQuery){ eggShownForQuery = true; showEgg(); }
   } else { eggShownForQuery = false; }
 
-  const items = WORDS.filter(w=>{
+  const ownItems = WORDS.filter(w=>{
     if(vocabUI.letter!=='ALL' && w.letter!==vocabUI.letter) return false;
     if(!q) return true;
     return norm(w.english).includes(q) || norm(w.translation).includes(q);
-  });
-  $('vocab-count').textContent = items.length + ' / ' + WORDS.length;
+  }).map(w => ({...w, _sourceClass:'own', _sourceLabel:'📘 Starlight 6'}));
+
+  const externalItems = EXTERNAL_WORDS.filter(w=>{
+    if(vocabUI.letter!=='ALL' && w.letter!==vocabUI.letter) return false;
+    if(!q) return true;
+    return norm(w.english).includes(q) || norm(w.translation).includes(q);
+  }).map(w => ({...w, _sourceClass:'external', _sourceLabel:'🌐 Англо-русский 10 000'}));
+
+  const items = [...ownItems, ...externalItems];
+  $('vocab-count').textContent = items.length + ' / ' + (WORDS.length + EXTERNAL_WORDS.length);
   const box = $('vocab-list');
   if(!items.length){ box.innerHTML = '<div class="muted">Ничего не найдено.</div>'; return; }
+
   box.innerHTML = items.map(w=>`
     <div class="word">
       <button class="speak" onclick="speakEN(${JSON.stringify(w.english).replace(/"/g,'&quot;')})">🔊</button>
       <div class="txt">
         <div><span class="en">${esc(w.english)}</span>${w.partOfSpeech?`<span class="pos">${esc(w.partOfSpeech)}</span>`:''}</div>
+        ${w.transcription?`<div class="transcription">${esc(w.transcription)}</div>`:''}
         <div class="ru">${esc(w.translation||'—')}</div>
+        <div class="source-badge ${w._sourceClass==='external'?'external':''}">${w._sourceLabel}</div>
       </div>
     </div>`).join('');
 }
@@ -2357,6 +2389,7 @@ async function boot(){
   // 1. Словарь — единственное, что критично для запуска.
   try{
     await loadVocabulary();
+    await loadExternalVocabulary();
   }catch(error){
     console.error('Ошибка загрузки словаря:', error);
     $('vocab-list').innerHTML =
