@@ -193,6 +193,11 @@
   }
   input::placeholder{color:var(--ink3);}
   input:focus{outline:2px solid var(--blue); outline-offset:-1px;}
+  .google-result{margin-top:10px; border:1px solid var(--line); border-radius:14px; padding:14px; background:var(--card2);}
+  .google-result .google-source{color:var(--orange); font-size:12px; font-weight:700; margin-bottom:6px;}
+  .google-result .google-word{font-size:19px; font-weight:700;}
+  .google-result .google-tr{color:var(--ink2); margin-top:3px;}
+  .google-result .google-note{color:var(--ink3); font-size:12px; margin-top:8px;}
   .field-label{color:var(--ink2); font-size:14px; margin:0 0 6px; font-weight:500;}
 
   .az{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 4px;}
@@ -963,7 +968,7 @@
         <b>Добавить слова</b>
         <span class="muted" id="editor-found"></span>
       </div>
-      <input type="search" id="editor-search" placeholder="Поиск…" autocomplete="off" style="margin-top:10px;">
+      <input type="search" id="editor-search" placeholder="Напиши английское слово…" autocomplete="off" style="margin-top:10px;">
       <div class="chosen-list" id="editor-results" style="max-height:400px;"></div>
     </div>
   </div>
@@ -1106,6 +1111,11 @@ async function loadVocabulary(){
   if(!Array.isArray(vocabulary)){ throw new Error('vocabulary.json должен содержать массив слов'); }
   window.VOCAB_DATA = vocabulary;
 }
+
+let USER_WORDS = [];
+const LS_USER_WORDS = 'en6_user_words_v1';
+function saveUserWords(){ try{ localStorage.setItem(LS_USER_WORDS, JSON.stringify(USER_WORDS)); }catch(e){} }
+function loadUserWords(){ try{ const r=localStorage.getItem(LS_USER_WORDS); USER_WORDS=r?(JSON.parse(r)||[]):[]; }catch(e){ USER_WORDS=[]; } }
 
 async function loadExternalVocabulary(){
   const response = await fetch('./data/source-10000-test-50.json', { cache: 'no-cache' });
@@ -1477,7 +1487,8 @@ function lessonToExport(l){
     return {
       english: w.english,
       translation: w.translation || '',
-      partOfSpeech: w.partOfSpeech || ''
+      partOfSpeech: w.partOfSpeech || '',
+      source: w.source || 'Starlight 6'
     };
   }).filter(Boolean);
   return { name: l.name, words };
@@ -1635,21 +1646,113 @@ function renderEditor(){
 function moveWord(i,d){ const j=i+d; if(j<0||j>=editor.wordIds.length) return; const a=editor.wordIds; [a[i],a[j]]=[a[j],a[i]]; renderEditor(); }
 function removeWord(i){ editor.wordIds.splice(i,1); renderEditor(); }
 function addWord(id){ if(!editor.wordIds.includes(id)) editor.wordIds.push(id); renderEditor(); }
-function renderEditorResults(){
-  const q = norm(editor.search);
-  let items = q ? WORDS.filter(w=>norm(w.english).includes(q)||norm(w.translation).includes(q)) : WORDS;
+
+let editorSearchToken = 0;
+window.pendingGoogleWord = null;
+
+function renderLocalEditorResults(items){
   items = items.slice(0,120);
-  $('editor-found').textContent = q ? ('Найдено: '+items.length+(items.length===120?'+':'')) : '';
+  $('editor-found').textContent = 'Наш словарь: ' + items.length + (items.length===120?'+':'');
   const box = $('editor-results');
-  if(!items.length){ box.innerHTML = '<div class="muted">Ничего не найдено.</div>'; return; }
+  if(!items.length) return false;
   box.innerHTML = items.map(w=>{
     const inL = editor.wordIds.includes(w.id);
-    return `<div class="chosen-item">
-      <div class="t"><b>${esc(w.english)} ${w.partOfSpeech?`<span class="muted">${esc(w.partOfSpeech)}</span>`:''}</b><span>${esc(w.translation||'—')}</span></div>
-      <button class="icon-btn" ${inL?'disabled':''} onclick="addWord(${w.id})" style="${inL?'background:rgba(48,209,88,.2); color:var(--green);':''}">${inL?'✓':'＋'}</button>
-    </div>`;
+    const id = String(w.id).replace(/'/g, "\\'");
+    return '<div class="chosen-item">' +
+      '<div class="t"><b>' + esc(w.english) + ' ' + (w.partOfSpeech ? '<span class="muted">' + esc(w.partOfSpeech) + '</span>' : '') + '</b><span>' + esc(w.translation||'—') + '</span></div>' +
+      '<button class="icon-btn" ' + (inL?'disabled':'') + ' onclick="addWord(\'' + id + '\')" style="' + (inL?'background:rgba(48,209,88,.2); color:var(--green);':'') + '">' + (inL?'✓':'＋') + '</button>' +
+      '</div>';
   }).join('');
+  return true;
 }
+
+async function searchGoogleWord(query, token){
+  const box = $('editor-results');
+  const clean = query.trim();
+  if(!clean) return;
+
+  $('editor-found').textContent = 'Ищу…';
+  box.innerHTML = '<div class="muted">В нашем словаре нет. Ищу перевод…</div>';
+
+  try{
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&dt=bd&q=' + encodeURIComponent(clean);
+    const response = await fetch(url);
+    if(!response.ok) throw new Error('Google request failed');
+    const data = await response.json();
+    if(token !== editorSearchToken) return;
+
+    const translated = Array.isArray(data[0])
+      ? data[0].map(x => Array.isArray(x) ? x[0] : '').join('').trim()
+      : '';
+
+    if(!translated){
+      $('editor-found').textContent = 'Ничего не найдено';
+      box.innerHTML = '<div class="muted">Google не вернул перевод.</div>';
+      return;
+    }
+
+    window.pendingGoogleWord = { english:clean, translation:translated };
+    $('editor-found').textContent = 'Наш словарь: 0 · Google: 1';
+    box.innerHTML =
+      '<div class="google-result">' +
+        '<div class="google-source">🌐 Google</div>' +
+        '<div class="google-word">' + esc(clean) + '</div>' +
+        '<div class="google-tr">' + esc(translated) + '</div>' +
+        '<div class="google-note">Перевод найден автоматически. Добавь слово в урок, если он подходит.</div>' +
+        '<div style="margin-top:12px;"><button class="btn wide" onclick="addGoogleWord()">＋ Добавить в урок</button></div>' +
+      '</div>';
+  }catch(error){
+    if(token !== editorSearchToken) return;
+    $('editor-found').textContent = 'Поиск не удался';
+    box.innerHTML = '<div class="muted">Не удалось получить перевод. Проверь интернет-соединение.</div>';
+    console.error('Google lookup error:', error);
+  }
+}
+
+function addGoogleWord(){
+  const w = window.pendingGoogleWord;
+  if(!w || !w.english) return;
+
+  const existing = WORDS.find(x => norm(x.english) === norm(w.english));
+  if(existing){
+    addWord(existing.id);
+    return;
+  }
+
+  const saved = {
+    id: 'user-' + Date.now().toString(36) + Math.random().toString(36).slice(2,6),
+    english: w.english,
+    translation: w.translation,
+    source: 'Google',
+    sourceId: 'google',
+    letter: w.english.charAt(0).toUpperCase()
+  };
+
+  USER_WORDS.push(saved);
+  WORDS.push(saved);
+  WORDS_BY_ID[saved.id] = saved;
+  saveUserWords();
+  window.pendingGoogleWord = null;
+  addWord(saved.id);
+}
+
+async function renderEditorResults(){
+  const token = ++editorSearchToken;
+  const q = norm(editor.search);
+  const box = $('editor-results');
+
+  if(!q){
+    $('editor-found').textContent = '';
+    box.innerHTML = '<div class="muted">Начни вводить английское слово.</div>';
+    return;
+  }
+
+  const items = WORDS.filter(w => norm(w.english).includes(q) || norm(w.translation).includes(q));
+  if(renderLocalEditorResults(items)) return;
+
+  await searchGoogleWord(q, token);
+}
+
 function saveLesson(){
   const name = $('editor-name').value.trim().slice(0, NAME_MAX);
   const warn = $('editor-warn');
@@ -2398,7 +2501,8 @@ async function boot(){
   }
 
   // 2. Индекс слов.
-  WORDS = window.VOCAB_DATA;
+  loadUserWords();
+  WORDS = window.VOCAB_DATA.concat(USER_WORDS);
   WORDS_BY_ID = {};
   WORDS.forEach(w => { WORDS_BY_ID[w.id] = w; });
 
