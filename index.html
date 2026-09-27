@@ -221,6 +221,21 @@
   .word .source-badge.library{background:rgba(10,132,255,.14); color:var(--blue);}
   .word .source-badge.user{background:rgba(191,90,242,.14); color:var(--purple);}
   .word .txt{flex:1; min-width:0;}
+  .vocab-tabs{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:10px;}
+  .vocab-tab{background:var(--card2); color:var(--ink); border-radius:12px; padding:11px 8px; font-size:13px; font-weight:600; min-width:0; line-height:1.2;}
+  .vocab-tab.active{background:var(--blue); color:#fff;}
+  .vocab-tab.user.active{background:var(--purple);}
+  .vocab-tab small{display:block; opacity:.72; font-size:11px; margin-top:3px; font-weight:500;}
+  .vocab-manage{display:flex; flex-direction:column; gap:10px;}
+  .vocab-manage-title{font-weight:700; font-size:17px;}
+  .vocab-manage-sub{color:var(--ink2); font-size:13px;}
+  .vocab-actions{display:flex; gap:8px; flex-wrap:wrap;}
+  .vocab-actions .btn{flex:1; min-width:130px;}
+  .word-actions{display:flex; gap:6px; margin-top:8px;}
+  .word-action{background:var(--card2); color:var(--ink2); border-radius:10px; min-width:38px; height:36px; font-size:16px;}
+  .word-action.danger{color:var(--red);}
+  .vocab-form-actions{display:flex; gap:8px;}
+  .vocab-form-actions .btn{flex:1;}
   .speak{
     background:var(--card2); border-radius:50%; width:44px; height:44px;
     min-width:44px; font-size:18px; color:var(--blue);
@@ -902,33 +917,39 @@
     <div class="topbar">
       <button class="crumb-link" onclick="go('menu')">‹ Главная</button>
       <span class="crumb-sep">·</span>
-      <span class="crumb-current">Словарь</span>
+      <span class="crumb-current">Словари</span>
     </div>
     <div class="card" style="padding:12px;">
-      <input type="search" id="vocab-search" placeholder="Поиск по английскому или русскому…" autocomplete="off">
+      <input type="search" id="vocab-search" placeholder="Поиск по двум словарям…" autocomplete="off">
+      <div class="vocab-tabs">
+        <button class="vocab-tab active" id="vocab-tab-all" onclick="setVocabSource('all')">Все<small id="vocab-tab-all-count">0</small></button>
+        <button class="vocab-tab" id="vocab-tab-library" onclick="setVocabSource('library')">📘 Библиотека<small id="vocab-tab-library-count">0</small></button>
+        <button class="vocab-tab user" id="vocab-tab-user" onclick="setVocabSource('user')">⭐ Мои слова<small id="vocab-tab-user-count">0</small></button>
+      </div>
       <div class="az" id="az-bar"></div>
     </div>
-    <div class="card">
-      <div class="row" style="justify-content:space-between; gap:8px;">
-        <span class="badge blue">📘 Библиотека</span>
-        <span class="badge">⭐ Мои слова: <b id="user-words-count">0</b></span>
-      </div>
-      <div class="sep"></div>
-      <div class="field-label">Добавить одно слово</div>
-      <div class="stack">
+
+    <div class="card hidden" id="user-word-tools">
+      <div class="vocab-manage-title" id="user-word-form-title">⭐ Мои слова</div>
+      <div class="vocab-manage-sub">Добавление и управление пользовательскими словами.</div>
+      <div class="stack" style="margin-top:10px;">
         <input type="text" id="user-word-english" placeholder="English">
         <input type="text" id="user-word-translation" placeholder="Перевод">
         <input type="text" id="user-word-transcription" placeholder="Транскрипция, например /haʊs/">
         <input type="text" id="user-word-russian-transcription" placeholder="Русская подсказка произношения">
         <input type="text" id="user-word-pos" placeholder="Часть речи, например n / v / adj">
-        <button class="btn wide" onclick="addUserWordFromForm()">＋ Добавить в мои слова</button>
+        <div class="vocab-form-actions">
+          <button class="btn" id="user-word-save-btn" onclick="saveUserWordForm()">＋ Добавить</button>
+          <button class="btn sec hidden" id="user-word-cancel-btn" onclick="cancelUserWordEdit()">Отмена</button>
+        </div>
       </div>
       <div class="warn hidden" id="user-word-warn"></div>
+
       <div class="sep"></div>
       <div class="field-label">Добавить списком</div>
       <div class="muted" style="margin-bottom:6px;">Формат: <b>house - дом</b><br>Можно расширить: <b>house - дом - /haʊs/ - хаус - n</b></div>
-      <textarea id="user-words-bulk" rows="6" style="width:100%;font-family:inherit;font-size:17px;padding:12px 14px;border:none;border-radius:12px;background:var(--card2);color:var(--ink);resize:vertical;" placeholder="house - дом&#10;book - книга"></textarea>
-      <div class="row" style="margin-top:8px;">
+      <textarea id="user-words-bulk" rows="5" style="width:100%;font-family:inherit;font-size:17px;padding:12px 14px;border:none;border-radius:12px;background:var(--card2);color:var(--ink);resize:vertical;" placeholder="house - дом&#10;book - книга"></textarea>
+      <div class="vocab-actions">
         <button class="btn sec" onclick="addUserWordsBulk()">＋ Добавить список</button>
         <button class="btn sec" onclick="openUserWordsFile()">📥 Импорт</button>
         <button class="btn sec" onclick="downloadUserWords()">📤 Экспорт</button>
@@ -936,6 +957,7 @@
       <div class="warn hidden" id="user-words-bulk-warn"></div>
       <input type="file" id="user-words-file" accept=".json,application/json" style="display:none;">
     </div>
+
     <div class="card" id="vocab-list"><div class="muted">Загрузка…</div></div>
     <div class="muted center" id="vocab-count" style="margin-top:6px;">…</div>
   </div>
@@ -1173,6 +1195,7 @@ function refreshWordIndexes(){
   WORDS = window.VOCAB_DATA.concat(USER_WORDS);
   WORDS_BY_ID = {};
   WORDS.forEach(w => { WORDS_BY_ID[w.id] = w; });
+  updateVocabTabs();
   buildAZ();
 }
 function addUserWord(raw){
@@ -1501,38 +1524,160 @@ function eggBurst(box, count){
   }
 }
 
-const vocabUI = { search:'', letter:'ALL' };
+const vocabUI = { search:'', letter:'ALL', source:'all' };
+let editingUserWordId = null;
+
+function sameWordId(a,b){ return String(a) === String(b); }
+function userWordById(id){ return USER_WORDS.find(w=>sameWordId(w.id,id)) || null; }
+
+function setVocabSource(source){
+  vocabUI.source = source;
+  vocabUI.letter = 'ALL';
+  if(source !== 'user') cancelUserWordEdit();
+  updateVocabTabs();
+  buildAZ();
+  renderVocab();
+}
+function updateVocabTabs(){
+  const configs = [
+    ['vocab-tab-all','vocab-tab-all-count',WORDS.length],
+    ['vocab-tab-library','vocab-tab-library-count',window.VOCAB_DATA.length],
+    ['vocab-tab-user','vocab-tab-user-count',USER_WORDS.length]
+  ];
+  configs.forEach(([buttonId,countId,count])=>{
+    const btn=$(buttonId); if(!btn) return;
+    btn.classList.toggle('active', vocabUI.source===buttonId.replace('vocab-tab-',''));
+    const small=$(countId); if(small) small.textContent=count;
+  });
+}
 function buildAZ(){
-  const present = new Set(WORDS.map(w=>String(w.english||'').trim().charAt(0).toUpperCase()).filter(Boolean));
+  const sourceWords = vocabUI.source==='library' ? window.VOCAB_DATA : (vocabUI.source==='user' ? USER_WORDS : WORDS);
+  const present = new Set(sourceWords.map(w=>String(w.english||'').trim().charAt(0).toUpperCase()).filter(Boolean));
   $('az-bar').innerHTML = ['ALL', ...LETTERS].map(L=>{
-    const dis = (L!=='ALL' && !present.has(L)) ? 'disabled' : '';
-    const act = (vocabUI.letter===L) ? 'active' : '';
-    return `<button class="${act}" ${dis} onclick="setLetter('${L}')">${L==='ALL'?'Все':L}</button>`;
+    const dis=(L!=='ALL' && !present.has(L)) ? 'disabled' : '';
+    const act=(vocabUI.letter===L) ? 'active' : '';
+    return '<button class="'+act+'" '+dis+' onclick="setLetter(\''+L+'\')">'+(L==='ALL'?'Все':L)+'</button>';
   }).join('');
 }
-function setLetter(L){ vocabUI.letter = L; buildAZ(); renderVocab(); }
-function renderVocab(){
-  const q = norm(vocabUI.search);
-  if(q === EASTER_EGG){ if(!eggShownForQuery){ eggShownForQuery=true; showEgg(); } }
-  else { eggShownForQuery=false; }
-  const items = WORDS.filter(w=>{
-    const letter = String(w.english||'').trim().charAt(0).toUpperCase();
+function setLetter(L){ vocabUI.letter=L; buildAZ(); renderVocab(); }
+
+function resetUserWordForm(){
+  editingUserWordId=null;
+  $('user-word-english').value='';
+  $('user-word-translation').value='';
+  $('user-word-transcription').value='';
+  $('user-word-russian-transcription').value='';
+  $('user-word-pos').value='';
+  $('user-word-form-title').textContent='⭐ Мои слова';
+  $('user-word-save-btn').textContent='＋ Добавить';
+  $('user-word-cancel-btn').classList.add('hidden');
+  $('user-word-warn').classList.add('hidden');
+}
+function cancelUserWordEdit(){ resetUserWordForm(); }
+function beginUserWordEdit(id){
+  const w=userWordById(id); if(!w) return;
+  editingUserWordId=w.id;
+  $('user-word-english').value=w.english||'';
+  $('user-word-translation').value=w.translation||'';
+  $('user-word-transcription').value=w.transcription||'';
+  $('user-word-russian-transcription').value=w.russianTranscription||'';
+  $('user-word-pos').value=w.partOfSpeech||'';
+  $('user-word-form-title').textContent='✏️ Редактировать слово';
+  $('user-word-save-btn').textContent='Сохранить изменения';
+  $('user-word-cancel-btn').classList.remove('hidden');
+  $('user-word-warn').classList.add('hidden');
+  $('user-word-tools').classList.remove('hidden');
+  $('user-word-english').focus();
+}
+function saveUserWordForm(){
+  const english=$('user-word-english').value.trim();
+  const translation=$('user-word-translation').value.trim();
+  const transcription=$('user-word-transcription').value.trim();
+  const russianTranscription=$('user-word-russian-transcription').value.trim();
+  const partOfSpeech=$('user-word-pos').value.trim();
+  const warn=$('user-word-warn');
+  if(!english||!translation){ warn.textContent='Нужно заполнить английское слово и перевод.'; warn.classList.remove('hidden'); return; }
+  const duplicate=USER_WORDS.find(w=>!sameWordId(w.id,editingUserWordId)&&norm(w.english)===norm(english)&&norm(w.translation)===norm(translation));
+  if(duplicate){ warn.textContent='Такое слово уже есть в «Моих словах».'; warn.classList.remove('hidden'); return; }
+
+  if(editingUserWordId!==null){
+    const w=userWordById(editingUserWordId);
+    if(!w){ resetUserWordForm(); return; }
+    w.english=english;
+    w.translation=translation;
+    w.transcription=transcription;
+    w.russianTranscription=russianTranscription;
+    w.partOfSpeech=normalizePartOfSpeech(partOfSpeech);
+    w.letter=english.charAt(0).toUpperCase();
+    saveUserWords();
+    refreshWordIndexes();
+  }else{
+    addUserWord({english,translation,transcription,russianTranscription,partOfSpeech});
+  }
+  resetUserWordForm();
+  renderVocab();
+}
+function deleteUserWord(id){
+  const w=userWordById(id); if(!w) return;
+  const usedIn=lessons.filter(l=>Array.isArray(l.wordIds)&&l.wordIds.some(x=>sameWordId(x,id)));
+  const suffix=usedIn.length ? '\n\nСлово также будет убрано из уроков: '+usedIn.map(l=>l.name).join(', ') : '';
+  if(!confirm('Удалить «'+w.english+'» из «Моих слов»?'+suffix)) return;
+
+  USER_WORDS=USER_WORDS.filter(x=>!sameWordId(x.id,id));
+  saveUserWords();
+  usedIn.forEach(l=>{
+    l.wordIds=l.wordIds.filter(x=>!sameWordId(x,id));
+    reconcileProgress(l.id,l.wordIds);
+  });
+  if(usedIn.length) saveLessons();
+  if(sameWordId(editingUserWordId,id)) resetUserWordForm();
+  refreshWordIndexes();
+  renderVocab();
+}
+function filteredVocabWords(){
+  const q=norm(vocabUI.search);
+  const sourceWords=vocabUI.source==='library' ? window.VOCAB_DATA : (vocabUI.source==='user' ? USER_WORDS : WORDS);
+  return sourceWords.filter(w=>{
+    const letter=String(w.english||'').trim().charAt(0).toUpperCase();
     if(vocabUI.letter!=='ALL' && letter!==vocabUI.letter) return false;
     return !q || norm(w.english).includes(q) || norm(w.translation).includes(q);
   });
-  $('vocab-count').textContent = items.length + ' / ' + WORDS.length;
-  const userCount = $('user-words-count'); if(userCount) userCount.textContent = USER_WORDS.length;
-  const box = $('vocab-list');
-  if(!items.length){ box.innerHTML='<div class="muted">Ничего не найдено.</div>'; return; }
-  box.innerHTML = items.map(w=>{
-    const sourceClass = w.source===WORD_SOURCE.USER ? 'user' : 'library';
-    const pos = w.partOfSpeech ? '<span class="pos">'+esc(w.partOfSpeech)+'</span>' : '';
-    const tr = w.transcription ? '<div class="transcription">'+esc(w.transcription)+'</div>' : '';
-    const ruTr = w.russianTranscription ? '<div class="transcription">рус. '+esc(w.russianTranscription)+'</div>' : '';
-    return '<div class="word">' +
-      '<button class="speak" onclick="speakEN('+JSON.stringify(w.english).replace(/"/g,'&quot;')+')">🔊</button>' +
-      '<div class="txt"><div><span class="en">'+esc(w.english)+'</span>'+pos+'</div>'+tr+ruTr+'<div class="ru">'+esc(w.translation||'—')+'</div><div class="source-badge '+sourceClass+'">'+sourceLabel(w)+'</div></div>' +
-      '</div>';
+}
+function renderVocab(){
+  const q=norm(vocabUI.search);
+  if(q===EASTER_EGG){ if(!eggShownForQuery){ eggShownForQuery=true; showEgg(); } }
+  else { eggShownForQuery=false; }
+
+  updateVocabTabs();
+  const items=filteredVocabWords();
+  const total=vocabUI.source==='library' ? window.VOCAB_DATA.length : (vocabUI.source==='user' ? USER_WORDS.length : WORDS.length);
+  $('vocab-count').textContent=items.length+' / '+total;
+
+  const toolsCard=$('user-word-tools');
+  if(toolsCard) toolsCard.classList.toggle('hidden',vocabUI.source!=='user');
+
+  const box=$('vocab-list');
+  if(!items.length){
+    box.innerHTML=vocabUI.source==='user'
+      ? '<div class="muted">В «Моих словах» пока ничего нет. Добавь первое слово выше.</div>'
+      : '<div class="muted">Ничего не найдено.</div>';
+    return;
+  }
+
+  box.innerHTML=items.map(w=>{
+    const sourceClass=w.source===WORD_SOURCE.USER?'user':'library';
+    const pos=w.partOfSpeech ? '<span class="pos">'+esc(w.partOfSpeech)+'</span>' : '';
+    const tr=w.transcription ? '<div class="transcription">'+esc(w.transcription)+'</div>' : '';
+    const ruTr=w.russianTranscription ? '<div class="transcription">рус. '+esc(w.russianTranscription)+'</div>' : '';
+    const actions=(w.source===WORD_SOURCE.USER&&vocabUI.source==='user')
+      ? '<div class="word-actions">'+
+          '<button class="word-action" title="Редактировать" onclick="beginUserWordEdit('+JSON.stringify(w.id).replace(/"/g,'&quot;')+')">✏️</button>'+
+          '<button class="word-action danger" title="Удалить" onclick="deleteUserWord('+JSON.stringify(w.id).replace(/"/g,'&quot;')+')">🗑</button>'+
+        '</div>' : '';
+    return '<div class="word">'+
+      '<button class="speak" onclick="speakEN('+JSON.stringify(w.english).replace(/"/g,'&quot;')+')">🔊</button>'+
+      '<div class="txt"><div><span class="en">'+esc(w.english)+'</span>'+pos+'</div>'+tr+ruTr+'<div class="ru">'+esc(w.translation||'—')+'</div>'+
+      '<div class="source-badge '+sourceClass+'">'+sourceLabel(w)+'</div>'+actions+'</div></div>';
   }).join('');
 }
 
@@ -1772,7 +1917,7 @@ function renderLocalEditorResults(items){
   const box = $('editor-results');
   if(!items.length){ box.innerHTML = '<div class="muted">Ничего не найдено.</div>'; return false; }
   box.innerHTML = items.map(w=>{
-    const inL = editor.wordIds.includes(w.id);
+    const inL = editor.wordIds.some(id => sameWordId(id, w.id));
     const id = String(w.id).replace(/'/g, "\\'");
     return '<div class="chosen-item">' +
       '<div class="t"><b>' + esc(w.english) + ' ' + (w.partOfSpeech ? '<span class="muted">' + esc(w.partOfSpeech) + '</span>' : '') + '</b><span>' + esc(w.translation||'—') + '</span><small class="muted" style="display:block;margin-top:5px;">' + sourceLabel(w) + '</small></div>' +
