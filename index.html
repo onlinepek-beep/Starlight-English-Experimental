@@ -1561,7 +1561,10 @@
     padding:6px 0;
     color:var(--blue);
     background:none;
-    font:650 17px/1.2 inherit;
+    font-family:inherit;
+    font-size:17px;
+    line-height:1.2;
+    font-weight:650;
     white-space:nowrap;
   }
   .home-all-link span{font-size:21px;line-height:.8;font-weight:400;}
@@ -1893,6 +1896,13 @@
   .tabbar .tab.active{
     background:transparent;
     color:var(--blue);
+  }
+
+  @media (display-mode:standalone){
+    .app{
+      padding-top:calc(28px + env(safe-area-inset-top));
+      padding-bottom:calc(96px + env(safe-area-inset-bottom));
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
