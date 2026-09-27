@@ -90,8 +90,18 @@
     padding-bottom:env(safe-area-inset-bottom);
   }
   .app{
+    position:relative;
+    z-index:1;
     max-width:720px; margin:0 auto;
     padding: calc(28px + env(safe-area-inset-top)) 16px calc(96px + env(safe-area-inset-bottom));
+  }
+  #screen-menu,
+  #screen-menu .card-list,
+  #screen-menu .card-list .row,
+  #screen-menu .card{
+    position:relative;
+    z-index:2;
+    pointer-events:auto;
   }
 
   .large-title{
@@ -1950,6 +1960,8 @@ function go(screen){
   else if(screen==='help'){ show('screen-help'); }
   else if(screen==='settings'){ show('screen-settings'); renderSettings(); }
 }
+window.go = go;
+window.show = show;
 
 /* Тап 5 раз по заголовку → фейерверк */
 let titleTapCount = 0;
