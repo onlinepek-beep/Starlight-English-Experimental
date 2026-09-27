@@ -44,25 +44,55 @@
   }
 
   .large-title{
-    font-size:34px;
-    font-weight:800;
-    letter-spacing:-0.8px;
     margin:14px 4px 18px;
     cursor:pointer;
     user-select:none;
     -webkit-user-select:none;
-    display:inline-block;
+    display:block;
     white-space:nowrap;
     touch-action:manipulation;
   }
+  .large-title .title-word{
+    display:inline-block;
+    position:relative;
+    font-family:"Avenir Next","Avenir","Helvetica Neue",Arial,sans-serif;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:-1.4px;
+    line-height:1;
+  }
+  .large-title .title-star{
+    color:var(--blue);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    font-size:15px;
+    font-weight:700;
+    margin-left:4px;
+    vertical-align:top;
+    position:relative;
+    top:-2px;
+  }
+  .large-title .title-sub{
+    display:block;
+    margin-top:6px;
+    color:var(--ink2);
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:0;
+    line-height:1.1;
+  }
   @media (max-width:520px){
-    .large-title{
-      font-size:16px;
-      letter-spacing:-0.2px;
-      white-space:nowrap;
-      display:block;
-      width:max-content;
-      max-width:100%;
+    .large-title .title-word{
+      font-size:28px;
+      letter-spacing:-1.1px;
+    }
+    .large-title .title-star{
+      font-size:14px;
+      margin-left:3px;
+      top:-2px;
+    }
+    .large-title .title-sub{
+      font-size:12px;
+      margin-top:6px;
     }
   }
 
@@ -826,7 +856,7 @@
 <div class="app">
 
    <div id="screen-menu" class="screen-anim">
-    <div class="large-title" id="main-title" onclick="onTitleTap()">Starlight — английский язык</div>
+    <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
 
     <div class="card-list">
       <div class="row" onclick="go('lessons')" style="cursor:pointer;">
