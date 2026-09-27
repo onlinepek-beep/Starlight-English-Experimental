@@ -784,6 +784,23 @@
     line-height:1.45;
     margin:10px 8px 0;
   }
+  .settings-status{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .settings-status-dot{
+    width:10px;
+    height:10px;
+    min-width:10px;
+    border-radius:50%;
+    background:#34c759;
+    box-shadow:0 0 0 4px rgba(52,199,89,.12);
+  }
+  .settings-status-dot.offline{
+    background:#ff453a;
+    box-shadow:0 0 0 4px rgba(255,69,58,.12);
+  }
   #screen-settings .settings-row .muted{
     flex-shrink:0;
   }
@@ -1454,6 +1471,17 @@
     </div>
 
     <div class="settings-note">Резервная копия не содержит встроенный словарь приложения. Она сохраняет только пользовательские данные и выбранную тему.</div>
+
+    <div class="settings-group-title">Подключение</div>
+    <div class="card">
+      <div class="settings-row settings-status">
+        <span class="settings-status-dot" id="settings-status-dot"></span>
+        <div class="settings-main">
+          <div class="settings-title" id="settings-status-title">Онлайн</div>
+          <div class="settings-sub" id="settings-status-sub">Приложение может работать без интернета после загрузки.</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="screen-lesson" class="hidden">
@@ -1954,6 +1982,22 @@ function resetAllUserData(){
   alert('Данные сброшены.');
 }
 
+function updateSettingsConnectionStatus(){
+  const title = $('settings-status-title');
+  const sub = $('settings-status-sub');
+  const dot = $('settings-status-dot');
+  if(!title || !sub || !dot) return;
+
+  const offline = !navigator.onLine;
+  const swActive = 'serviceWorker' in navigator && !!navigator.serviceWorker.controller;
+
+  title.textContent = offline ? 'Офлайн' : 'Онлайн';
+  sub.textContent = offline
+    ? (swActive ? 'Интернет отключён · приложение работает из локального кэша.' : 'Интернет отключён · offline-режим ещё не активирован.')
+    : (swActive ? 'Интернет доступен · offline-режим активен.' : 'Интернет доступен · offline-режим устанавливается.');
+  dot.classList.toggle('offline', offline);
+}
+
 function show(id){
   const screens = ['screen-menu','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
   screens.forEach(x=>{
@@ -1970,6 +2014,7 @@ function show(id){
   $('tab-home').classList.toggle('active', id==='screen-menu');
   $('tab-lessons').classList.toggle('active', id==='screen-lessons');
   $('tab-vocab').classList.toggle('active', id==='screen-vocab');
+  if(id==='screen-settings') updateSettingsConnectionStatus();
   window.scrollTo({top:0, behavior:'auto'});
 }
 function go(screen){
