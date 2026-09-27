@@ -1457,6 +1457,63 @@
     .home-progress-card{min-height:268px;}
     .home-progress-content{min-height:268px;padding:28px 30px;}
   }
+
+  /* ===== HOME: РАЗДЕЛЫ ===== */
+  .home-sections-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:2px 2px 10px;
+  }
+  .home-sections-head h2{
+    margin:0;
+    color:var(--ink);
+    font-size:22px;
+    font-weight:750;
+    line-height:1.2;
+    letter-spacing:-.35px;
+  }
+  .home-sections-link{
+    display:inline-flex;
+    align-items:center;
+    gap:2px;
+    padding:5px 0;
+    background:transparent;
+    border:0;
+    color:var(--blue);
+    font-family:inherit;
+    font-size:16px;
+    font-weight:650;
+    line-height:1.2;
+    white-space:nowrap;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+  .home-sections-link span{
+    font-size:22px;
+    line-height:.8;
+    font-weight:400;
+  }
+  .home-section-list{
+    width:100%;
+  }
+  .sections-page-title{
+    margin:2px 2px 16px;
+  }
+  .sections-page-title h1{
+    margin:0 0 5px;
+    color:var(--ink);
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-.6px;
+  }
+  @media (max-width:520px){
+    .home-sections-head{margin-top:0;margin-bottom:9px;}
+    .home-sections-head h2{font-size:21px;}
+    .home-sections-link{font-size:15px;}
+    .sections-page-title h1{font-size:26px;}
+  }
 </style>
 </head>
 <body>
@@ -1482,6 +1539,74 @@
       </div>
     </section>
 
+    <div class="home-sections-head">
+      <h2>Разделы</h2>
+      <button class="home-sections-link" type="button" onclick="go('sections')">Все разделы <span aria-hidden="true">›</span></button>
+    </div>
+
+    <div class="home-section-list">
+      <div class="card-list">
+        <div class="row" onclick="go('lessons')" style="cursor:pointer;">
+          <div class="lesson-badge cur">📚</div>
+          <div style="flex:1;">
+            <div class="lesson-name">Уроки</div>
+            <div class="lesson-progress">Создавай и проходи уроки</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+      </div>
+
+      <div class="card-list">
+        <div class="row" onclick="go('vocab')" style="cursor:pointer;">
+          <div class="lesson-badge cur dict-badge">📖</div>
+          <div style="flex:1;">
+            <div class="lesson-name">Словарь</div>
+            <div class="lesson-progress">Список слов и фраз</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+      </div>
+
+      <div class="card-list">
+        <div class="row" onclick="go('help')" style="cursor:pointer;">
+          <div class="lesson-badge cur">💡</div>
+          <div style="flex:1;">
+            <div class="lesson-name">Помощь</div>
+            <div class="lesson-progress">Как учить слова и пользоваться приложением</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+      </div>
+
+      <div class="card-list">
+        <div class="row" onclick="go('settings')" style="cursor:pointer;">
+          <div class="lesson-badge cur">⚙️</div>
+          <div style="flex:1;">
+            <div class="lesson-name">Настройки</div>
+            <div class="lesson-progress">Данные, тема и информация о приложении</div>
+          </div>
+          <span class="chev">›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted" style="text-align:center;">Starlight · © 2026 · Английский язык</div>
+    </div>
+  </div>
+
+  <div id="screen-sections" class="hidden">
+    <div class="topbar">
+      <button class="crumb-link" onclick="go('menu')">‹ Главная</button>
+      <span class="crumb-sep">·</span>
+      <span class="crumb-current">Все разделы</span>
+    </div>
+
+    <div class="sections-page-title">
+      <h1>Все разделы</h1>
+      <div class="muted">Все возможности приложения в одном месте.</div>
+    </div>
+
     <div class="card-list">
       <div class="row" onclick="go('lessons')" style="cursor:pointer;">
         <div class="lesson-badge cur">📚</div>
@@ -1491,9 +1616,7 @@
         </div>
         <span class="chev">›</span>
       </div>
-    </div>
 
-    <div class="card-list">
       <div class="row" onclick="go('alphabet')" style="cursor:pointer;">
         <div class="lesson-badge cur">🔤</div>
         <div style="flex:1;">
@@ -1502,9 +1625,7 @@
         </div>
         <span class="chev">›</span>
       </div>
-    </div>
 
-    <div class="card-list">
       <div class="row" onclick="go('numbers')" style="cursor:pointer;">
         <div class="lesson-badge cur">🔢</div>
         <div style="flex:1;">
@@ -1513,20 +1634,16 @@
         </div>
         <span class="chev">›</span>
       </div>
-    </div>
 
-    <div class="card-list">
       <div class="row" onclick="go('vocab')" style="cursor:pointer;">
         <div class="lesson-badge cur dict-badge">📖</div>
         <div style="flex:1;">
           <div class="lesson-name">Словарь</div>
-          <div class="lesson-progress">Список слов и фраз.</div>
+          <div class="lesson-progress">Список слов и фраз</div>
         </div>
         <span class="chev">›</span>
       </div>
-    </div>
 
-    <div class="card-list">
       <div class="row" onclick="go('help')" style="cursor:pointer;">
         <div class="lesson-badge cur">💡</div>
         <div style="flex:1;">
@@ -1535,9 +1652,7 @@
         </div>
         <span class="chev">›</span>
       </div>
-    </div>
 
-    <div class="card-list">
       <div class="row" onclick="go('settings')" style="cursor:pointer;">
         <div class="lesson-badge cur">⚙️</div>
         <div style="flex:1;">
@@ -1547,13 +1662,7 @@
         <span class="chev">›</span>
       </div>
     </div>
-
-    <div class="card">
-      <div class="muted" style="text-align:center;">Starlight · © 2026 · Английский язык</div>
-    </div>
-
   </div>
-
 
   <div id="screen-alphabet" class="hidden">
     <div class="topbar">
@@ -2349,7 +2458,7 @@ function updateSettingsConnectionStatus(){
 }
 
 function show(id){
-  const screens = ['screen-menu','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
+  const screens = ['screen-menu','screen-sections','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
   screens.forEach(x=>{
     const el = $(x);
     const isTarget = x === id;
@@ -2431,6 +2540,7 @@ function homeProgressAction(){
 function go(screen){
   state.screen = screen; saveState();
   if(screen==='menu'){ show('screen-menu'); renderHomeProgress(); }
+  else if(screen==='sections'){ show('screen-sections'); }
   else if(screen==='alphabet'){ show('screen-alphabet'); renderAlphabet(); }
   else if(screen==='numbers'){ show('screen-numbers'); renderNumbers(); }
   else if(screen==='vocab'){ show('screen-vocab'); renderVocab(); }
