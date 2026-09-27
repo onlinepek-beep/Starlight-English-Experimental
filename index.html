@@ -1147,7 +1147,7 @@ const WORD_SOURCE_LABEL = Object.freeze({ library:'📘 Библиотека', u
 function makeUserWordId(){ return 'user-' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
 function normalizePartOfSpeech(value){
   const raw = String(value == null ? '' : value).trim();
-  return raw.replace(/^\\((.*)\\)$/,'$1');
+  return raw.replace(/^\((.*)\)$/,'$1');
 }
 function normalizeWord(raw, sourceOverride){
   const w = raw && typeof raw === 'object' ? raw : {};
@@ -1171,6 +1171,7 @@ function normalizeWord(raw, sourceOverride){
 function normalizeVocabulary(vocabulary){ return vocabulary.map(w => normalizeWord(w, WORD_SOURCE.LIBRARY)); }
 function normalizeUserWords(vocabulary){ return vocabulary.filter(w => w && String(w.english || '').trim()).map(w => normalizeWord(w, WORD_SOURCE.USER)); }
 const LS_USER_WORDS = 'en6_user_words_v1';
+function loadUserWords(){ try{ const r=localStorage.getItem(LS_USER_WORDS); USER_WORDS=r?normalizeUserWords(JSON.parse(r)||[]):[]; }catch(e){ USER_WORDS=[]; } }
 
 function saveUserWords(){ try{ localStorage.setItem(LS_USER_WORDS, JSON.stringify(USER_WORDS)); }catch(e){} }
 function refreshWordIndexes(){
@@ -1191,7 +1192,7 @@ function addUserWord(raw){
 }
 function parseUserWordsText(text){
   const result = [];
-  for(const line of String(text || '').split(/\\r?\\n/)){
+  for(const line of String(text || '').split(/\r?\n/)){
     const value = line.trim();
     if(!value || value.startsWith('#')) continue;
     const parts = value.split(' - ');
