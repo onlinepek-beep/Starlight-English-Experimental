@@ -1310,6 +1310,123 @@
   .home-profile{
     min-width:0;
   }
+
+  /* ===== HOME: ПРОГРЕСС ПО ПОСЛЕДНЕМУ ДИКТАНТУ ===== */
+  .home-progress-card{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    min-height:248px;
+    margin:0 0 14px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    box-shadow:0 8px 26px rgba(0,0,0,.22);
+    background:#10213f;
+  }
+  .home-progress-art,
+  .home-progress-overlay{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .home-progress-art{
+    z-index:-2;
+    background:url('./assets/home-hero-night.svg') center center / cover no-repeat;
+  }
+  .home-progress-overlay{
+    z-index:-1;
+    background:linear-gradient(90deg, rgba(3,10,23,.86) 0%, rgba(3,10,23,.58) 45%, rgba(3,10,23,.10) 100%);
+  }
+  html[data-theme="light"] .home-progress-art{background-image:url('./assets/home-hero-day.svg');}
+  html[data-theme="light"] .home-progress-overlay{
+    background:linear-gradient(90deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.62) 43%, rgba(255,255,255,.08) 100%);
+  }
+  @media (prefers-color-scheme:light){
+    html[data-theme="system"] .home-progress-art{background-image:url('./assets/home-hero-day.svg');}
+    html[data-theme="system"] .home-progress-overlay{
+      background:linear-gradient(90deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.62) 43%, rgba(255,255,255,.08) 100%);
+    }
+  }
+  .home-progress-content{
+    min-height:248px;
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    max-width:560px;
+  }
+  .home-progress-title{
+    font-size:clamp(28px,5vw,40px);
+    line-height:1.04;
+    font-weight:800;
+    letter-spacing:-1px;
+    max-width:360px;
+  }
+  .home-progress-lesson{
+    margin-top:8px;
+    font-size:16px;
+    font-weight:650;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+  .home-progress-detail{
+    margin-top:4px;
+    font-size:14px;
+    font-weight:500;
+    color:var(--ink2);
+  }
+  .home-progress-line{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:min(100%,420px);
+    margin-top:14px;
+  }
+  .home-progress-track{
+    flex:1;
+    min-width:0;
+    height:8px;
+    border-radius:999px;
+    overflow:hidden;
+    background:rgba(255,255,255,.26);
+  }
+  html[data-theme="light"] .home-progress-track,
+  html[data-theme="system"] .home-progress-track{background:rgba(20,50,100,.14);}
+  .home-progress-fill{
+    width:0;
+    height:100%;
+    border-radius:inherit;
+    background:#4da3ff;
+    transition:width .3s ease;
+  }
+  .home-progress-line span{
+    min-width:42px;
+    text-align:right;
+    font-size:14px;
+    font-weight:700;
+  }
+  .home-progress-btn{
+    margin-top:16px;
+    min-height:48px;
+    min-width:250px;
+    border-radius:999px;
+    padding:0 24px;
+  }
+  @media (max-width:520px){
+    .home-progress-card{min-height:226px;border-radius:18px;}
+    .home-progress-content{min-height:226px;padding:20px 18px;}
+    .home-progress-title{font-size:29px;max-width:270px;}
+    .home-progress-lesson{font-size:14px;}
+    .home-progress-detail{font-size:13px;}
+    .home-progress-btn{width:100%;min-width:0;}
+  }
+  @media (min-width:900px){
+    .home-progress-card{min-height:268px;}
+    .home-progress-content{min-height:268px;padding:28px 30px;}
+  }
 </style>
 </head>
 <body>
@@ -1319,6 +1436,21 @@
 
   <div id="screen-menu" class="screen-anim">
     <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
+
+    <section class="home-progress-card" aria-label="Прогресс последнего урока">
+      <div class="home-progress-art" aria-hidden="true"></div>
+      <div class="home-progress-overlay" aria-hidden="true"></div>
+      <div class="home-progress-content">
+        <div class="home-progress-title">Продолжайте учиться</div>
+        <div class="home-progress-lesson" id="home-progress-lesson">—</div>
+        <div class="home-progress-detail" id="home-progress-detail">Диктант · 0 из 0 слов</div>
+        <div class="home-progress-line">
+          <div class="home-progress-track"><div class="home-progress-fill" id="home-progress-fill"></div></div>
+          <span id="home-progress-percent">0%</span>
+        </div>
+        <button class="btn home-progress-btn" id="home-progress-btn" onclick="homeProgressAction()">Создать урок</button>
+      </div>
+    </section>
 
     <div class="card-list">
       <div class="row" onclick="go('lessons')" style="cursor:pointer;">
@@ -2205,9 +2337,54 @@ function show(id){
   if(id==='screen-settings') updateSettingsConnectionStatus();
   window.scrollTo({top:0, behavior:'auto'});
 }
+
+function getHomeLastLesson(){
+  if(!Array.isArray(lessons) || !lessons.length) return null;
+  return lessons[lessons.length - 1] || null;
+}
+
+function renderHomeProgress(){
+  const lesson=getHomeLastLesson();
+  const name=$('home-progress-lesson');
+  const detail=$('home-progress-detail');
+  const fill=$('home-progress-fill');
+  const pct=$('home-progress-percent');
+  const btn=$('home-progress-btn');
+  if(!name || !detail || !fill || !pct || !btn) return;
+
+  if(!lesson){
+    name.textContent='Пока нет уроков';
+    detail.textContent='Создайте первый урок, чтобы начать учиться.';
+    fill.style.width='0%';
+    pct.textContent='0%';
+    btn.textContent='＋ Создать урок';
+    btn.onclick=()=>openLessonEditor(null);
+    return;
+  }
+
+  const total=lesson.wordIds.length;
+  const solved=isExDone(lesson.id,'dictation',total)
+    ? total
+    : Math.min(exSolvedCount(lesson.id,'dictation'), total);
+  const percent=total ? Math.round((solved/total)*100) : 0;
+
+  name.textContent=lesson.name || 'Последний урок';
+  detail.textContent='Диктант · Выучено ' + solved + ' из ' + total + ' слов';
+  fill.style.width=percent+'%';
+  pct.textContent=percent+'%';
+  btn.textContent='Продолжить урок';
+  btn.onclick=()=>resumeHomeLesson();
+}
+
+function homeProgressAction(){
+  const lesson=getHomeLastLesson();
+  if(lesson) resumeHomeLesson();
+  else openLessonEditor(null);
+}
+
 function go(screen){
   state.screen = screen; saveState();
-  if(screen==='menu') show('screen-menu');
+  if(screen==='menu'){ show('screen-menu'); renderHomeProgress(); }
   else if(screen==='alphabet'){ show('screen-alphabet'); renderAlphabet(); }
   else if(screen==='numbers'){ show('screen-numbers'); renderNumbers(); }
   else if(screen==='vocab'){ show('screen-vocab'); renderVocab(); }
