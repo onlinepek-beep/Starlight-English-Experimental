@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 720" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8d9ff"/>
+      <stop offset=".38" stop-color="#dce9ff"/>
+      <stop offset=".72" stop-color="#f9decf"/>
+      <stop offset="1" stop-color="#d9ecff"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx=".75" cy=".3" r=".3">
+      <stop offset="0" stop-color="#ffe0a7" stop-opacity=".9"/>
+      <stop offset=".4" stop-color="#ffd2c1" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#ffd2c1" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b4c9ef"/>
+      <stop offset="1" stop-color="#9db6e2"/>
+    </linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#789bd4"/>
+      <stop offset="1" stop-color="#6289c8"/>
+    </linearGradient>
+    <linearGradient id="front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f84bf"/>
+      <stop offset="1" stop-color="#42669d"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d6eaff"/>
+      <stop offset="1" stop-color="#a6c4e8"/>
+    </linearGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" seed="7"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 .03"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1600" height="720" fill="url(#sky)"/>
+  <rect width="1600" height="720" fill="url(#sunGlow)"/>
+  <path d="M0 350 160 250 300 330 470 150 625 315 780 122 955 300 1110 180 1285 305 1450 175 1600 290V500H0Z" fill="url(#far)"/>
+  <path d="m470 150 38 62 50 42-64-24-44 18Z" fill="#f4f5fb" opacity=".8"/>
+  <path d="m780 122 45 72 48 44-68-28-50 16Z" fill="#f7f7fb" opacity=".78"/>
+  <path d="m1450 175 42 64 45 40-62-22-46 15Z" fill="#f9f8fb" opacity=".72"/>
+  <path d="M0 430 190 294 360 408 540 225 720 394 900 207 1060 386 1240 236 1400 395 1600 230V545H0Z" fill="url(#mid)"/>
+  <path d="M0 500 165 358 335 492 505 278 670 470 845 300 1015 466 1190 318 1340 470 1500 312 1600 387V585H0Z" fill="url(#front)"/>
+  <rect y="500" width="1600" height="220" fill="url(#lake)" opacity=".92"/>
+  <g opacity=".36" stroke="#ffffff" stroke-linecap="round">
+    <path d="M840 540h350" stroke-width="7"/><path d="M880 558h280" stroke-width="5"/><path d="M915 576h220" stroke-width="4"/>
+  </g>
+  <g fill="#d7e7f8" opacity=".95">
+    <ellipse cx="1210" cy="188" rx="31" ry="28"/>
+  </g>
+  <path d="M0 645 90 618 150 630 210 604 280 634 360 608 440 644 520 616 600 650V720H0Z" fill="#5073aa" opacity=".8"/>
+  <path d="M1090 650 1160 618 1230 638 1290 608 1360 640 1425 598 1500 630 1600 590V720H1090Z" fill="#4c6e9f" opacity=".8"/>
+  <rect width="1600" height="720" filter="url(#grain)"/>
+</svg>
