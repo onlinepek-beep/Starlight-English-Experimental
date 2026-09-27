@@ -2162,7 +2162,7 @@
 <div id="celebration" class="celebration hidden">
   <div class="inner">
     <div class="emoji-big">🏆</div>
-    <h2>Урок завершён!</h2>
+    <h2 id="celebration-title">Урок завершён!</h2>
     <p class="sub">Все слова пройдены</p>
     <div class="stats" id="celebration-stats"></div>
     <button class="btn big" onclick="celebrationRetryDictation()">🎧 Пройти диктант заново</button>
@@ -3423,7 +3423,9 @@ function checkLessonComplete(){
     const profile = getProfile();
     $('ex-menu').innerHTML = '';
     $('lesson-finish-title').textContent = 'Урок «' + currentLesson.name + '» завершён!';
-    $('lesson-finish-text').textContent = profile.name ? 'Молодец, ' + profile.name + '! 🎉' : 'Все упражнения пройдены';
+    $('lesson-finish-text').textContent = profile.name
+      ? 'Молодец, ' + profile.name + '! ' + profile.avatar
+      : 'Все упражнения пройдены';
     $('lesson-finish').classList.remove('hidden');
   }
 }
@@ -3969,6 +3971,10 @@ function buildStatsHTML(lesson, highlightDictation){
 function showCelebration(){
   if(!currentLesson) return;
   const l = currentLesson;
+  const profile = getProfile();
+  $('celebration-title').textContent = profile.name
+    ? 'Молодец, ' + profile.name + '! ' + profile.avatar
+    : 'Молодец! ' + profile.avatar;
   $('celebration-stats').innerHTML = buildStatsHTML(l, true);
   $('celebration').classList.remove('hidden');
   window.scrollTo(0,0);
@@ -4065,10 +4071,14 @@ function finishExercise(complete){
 
   const emojiEl = $('ex-finish-emoji');
   const titleEl = $('ex-finish-title');
+  const profile = getProfile();
+  const congrats = profile.name
+    ? 'Молодец, ' + profile.name + '! ' + profile.avatar
+    : 'Молодец! ' + profile.avatar;
 
   if(done){
     emojiEl.textContent = '🎉';
-    titleEl.textContent = 'Молодец!';
+    titleEl.textContent = congrats;
     $('ex-finish-text').textContent = 'Упражнение пройдено';
     retry.classList.add('hidden');
   } else {
