@@ -1,11 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
     <linearGradient id="star" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset=".55" stop-color="#e8f8ff"/>
-      <stop offset="1" stop-color="#52bfff"/>
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#e8f8ff"/>
+      <stop offset="100%" stop-color="#52bfff"/>
     </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <path d="M512 186 C536 328 590 390 724 428 C590 450 536 506 512 678 C488 512 434 450 300 428 C434 390 488 328 512 186Z" fill="url(#star)"/>
-  <path d="M208 650 C220 706 240 732 292 746 C240 758 220 784 208 842 C196 784 176 758 124 746 C176 732 196 706 208 650Z" fill="url(#star)"/>
+  <g transform="translate(512 512) scale(2.15) translate(-253 -220)" filter="url(#glow)">
+    <path d="M253 97 C265 168 292 199 360 218 C292 229 266 257 253 344 C241 259 216 230 146 218 C217 199 241 168 253 97Z" fill="url(#star)"/>
+  </g>
+  <g transform="translate(210 730) scale(1.18)" fill="url(#star)">
+    <path d="M145 274 C151 301 161 313 187 320 C161 326 151 338 145 367 C139 338 129 326 103 320 C129 313 139 301 145 274Z"/>
+  </g>
 </svg>
