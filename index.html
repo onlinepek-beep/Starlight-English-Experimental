@@ -1161,7 +1161,7 @@ function normalizeWord(raw, sourceOverride){
     partOfSpeech: normalizePartOfSpeech(w.partOfSpeech),
     example: String(w.example == null ? '' : w.example).trim(),
     exampleTranslation: String(w.exampleTranslation == null ? '' : w.exampleTranslation).trim(),
-    source: sourceOverride || (w.source === 'Google' ? WORD_SOURCE.USER : (w.source === WORD_SOURCE.USER ? WORD_SOURCE.USER : WORD_SOURCE.LIBRARY)),
+    source: sourceOverride || (w.source === WORD_SOURCE.USER ? WORD_SOURCE.USER : WORD_SOURCE.LIBRARY),
     sourceId: String(w.sourceId == null ? '' : w.sourceId).trim(),
     topic: String(w.topic == null ? '' : w.topic).trim(),
     unit: String(w.unit == null ? '' : w.unit).trim(),
