@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#000000">
@@ -505,14 +505,7 @@
   .ex-row:active{background:var(--card2); transform:scale(.99);}
 
   .ex-icon{
-    width:44px;
-    min-width:44px;
-    max-width:44px;
-    height:44px;
-    min-height:44px;
-    max-height:44px;
-    flex:0 0 44px;
-    border-radius:13px;
+    min-width:40px; height:40px; border-radius:50%;
     background:var(--card2); color:var(--ink2);
     display:flex; align-items:center; justify-content:center;
     font-size:16px; font-weight:700;
@@ -1317,603 +1310,6 @@
   .home-profile{
     min-width:0;
   }
-
-  /* ===== НОВЫЙ HOME / RESPONSIVE APP SHELL ===== */
-  :root{
-    --home-hero-top:#061326;
-    --home-hero-mid:#182a52;
-    --home-hero-bottom:#07101f;
-    --home-mountain-back:#25375c;
-    --home-mountain-front:#09182d;
-    --home-mountain-water:rgba(100,160,255,.16);
-    --home-card-accent:#0A84FF;
-    --home-card-bg:var(--card);
-    --home-card-border:rgba(255,255,255,.05);
-    --home-shadow:0 8px 24px rgba(0,0,0,.22);
-  }
-
-  html[data-theme="light"]{
-    --home-hero-top:#d9eaff;
-    --home-hero-mid:#eff3ff;
-    --home-hero-bottom:#d9ebff;
-    --home-mountain-back:#b9cdf5;
-    --home-mountain-front:#90b5ee;
-    --home-mountain-water:rgba(255,255,255,.48);
-    --home-card-border:rgba(0,0,0,.05);
-    --home-shadow:0 8px 24px rgba(31,55,90,.09);
-  }
-
-  @media (prefers-color-scheme: light){
-    html[data-theme="system"]{
-      --home-hero-top:#d9eaff;
-      --home-hero-mid:#eff3ff;
-      --home-hero-bottom:#d9ebff;
-      --home-mountain-back:#b9cdf5;
-      --home-mountain-front:#90b5ee;
-      --home-mountain-water:rgba(255,255,255,.48);
-      --home-card-border:rgba(0,0,0,.05);
-      --home-shadow:0 8px 24px rgba(31,55,90,.09);
-    }
-  }
-
-  .home-shell{
-    width:100%;
-    max-width:1120px;
-    margin:0 auto;
-  }
-
-  .home-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    min-height:52px;
-    margin:0 2px 16px;
-  }
-
-  .home-brand{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    background:none;
-    color:var(--ink);
-    border:0;
-    padding:4px 0;
-    font:inherit;
-    cursor:pointer;
-    touch-action:manipulation;
-  }
-
-  .home-logo{
-    width:38px;
-    height:38px;
-    display:grid;
-    place-items:center;
-    color:var(--blue);
-    flex:0 0 38px;
-  }
-  .home-logo img{width:100%;height:100%;display:block;object-fit:contain;}
-  .home-brand-text{
-    font-family:"Avenir Next","Avenir","Helvetica Neue",Arial,sans-serif;
-    font-size:28px;
-    line-height:1;
-    font-weight:750;
-    letter-spacing:-1px;
-  }
-
-  .home-profile{
-    width:44px;
-    height:44px;
-    padding:0;
-    border-radius:50%;
-    background:transparent;
-    border:1.7px solid color-mix(in srgb, var(--ink) 78%, transparent);
-    color:var(--ink);
-    display:grid;
-    place-items:center;
-    flex:0 0 44px;
-    touch-action:manipulation;
-  }
-  .home-profile:active{transform:scale(.95);}
-  .home-profile-content{
-    display:grid;
-    place-items:center;
-    width:100%;
-    height:100%;
-    font-size:22px;
-    line-height:1;
-  }
-  .home-profile-content svg{width:23px;height:23px;display:block;}
-
-  .home-hero{
-    position:relative;
-    isolation:isolate;
-    overflow:hidden;
-    border-radius:22px;
-    min-height:255px;
-    background:linear-gradient(180deg,var(--home-hero-top) 0%,var(--home-hero-mid) 54%,var(--home-hero-bottom) 100%);
-    box-shadow:var(--home-shadow);
-    border:1px solid var(--home-card-border);
-  }
-  .home-hero-art{
-    position:absolute;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    background-image:url('./assets/home-hero.svg');
-    background-position:center;
-    background-size:cover;
-    background-repeat:no-repeat;
-  }
-  html[data-theme="light"] .home-hero-art{background-image:url('./assets/home-hero-light.svg');}
-  @media (prefers-color-scheme: light){
-    html[data-theme="system"] .home-hero-art{background-image:url('./assets/home-hero-light.svg');}
-  }
-
-  .home-hero-content{
-    position:relative;
-    z-index:2;
-    width:min(100%, 620px);
-    padding:28px 26px 24px;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    min-height:255px;
-    justify-content:center;
-  }
-  .home-hero-kicker{
-    font-size:clamp(27px,4vw,42px);
-    line-height:1.03;
-    letter-spacing:-1.1px;
-    font-weight:800;
-    max-width:520px;
-    text-wrap:balance;
-  }
-  .home-hero-lesson{
-    margin-top:9px;
-    font-size:clamp(14px,2vw,18px);
-    color:var(--ink);
-    opacity:.94;
-    max-width:540px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .home-hero-detail{
-    margin-top:3px;
-    color:rgba(255,255,255,.88);
-    font-size:13px;
-    line-height:1.25;
-  }
-  html[data-theme="light"] .home-hero-detail{color:rgba(5,20,45,.82);}
-  @media (prefers-color-scheme: light){
-    html[data-theme="system"] .home-hero-detail{color:rgba(5,20,45,.82);}
-  }
-
-  .home-progress-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    width:min(100%, 420px);
-    margin-top:16px;
-  }
-  .home-progress-track{
-    flex:1;
-    height:8px;
-    border-radius:99px;
-    overflow:hidden;
-    background:rgba(255,255,255,.20);
-  }
-  .home-progress-value{
-    width:0%;
-    height:100%;
-    border-radius:inherit;
-    background:#4da3ff;
-    box-shadow:0 0 12px rgba(77,163,255,.55);
-    transition:width .35s ease;
-  }
-  .home-progress-text{
-    min-width:40px;
-    text-align:right;
-    font-size:14px;
-    font-weight:650;
-  }
-  .home-continue-btn{
-    margin-top:17px;
-    min-height:50px;
-    border-radius:999px;
-    padding:0 22px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:24px;
-    color:#fff;
-    background:var(--blue);
-    font:600 16px/1 inherit;
-    box-shadow:0 8px 20px rgba(10,132,255,.28);
-    touch-action:manipulation;
-  }
-  .home-continue-btn span{
-    font-size:27px;
-    line-height:.7;
-    font-weight:300;
-  }
-  .home-continue-btn:active{transform:scale(.985);}
-  .home-continue-btn:disabled{opacity:.5;box-shadow:none;}
-
-  .home-section-heading{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-    margin:22px 2px 11px;
-  }
-  .home-section-heading h2{
-    margin:0;
-    font-size:22px;
-    line-height:1.2;
-    letter-spacing:-.35px;
-  }
-  .home-all-link{
-    display:inline-flex;
-    align-items:center;
-    gap:2px;
-    padding:6px 0;
-    color:var(--blue);
-    background:none;
-    font-family:inherit;
-    font-size:17px;
-    line-height:1.2;
-    font-weight:650;
-    white-space:nowrap;
-  }
-  .home-all-link span{font-size:21px;line-height:.8;font-weight:400;}
-
-  .home-sections{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
-  }
-
-  .home-section-card{
-    position:relative;
-    min-width:0;
-    min-height:132px;
-    padding:16px;
-    border-radius:20px;
-    background:var(--home-card-bg);
-    border:1px solid var(--home-card-border);
-    box-shadow:var(--home-shadow);
-    color:var(--ink);
-    text-align:left;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    align-items:flex-start;
-    touch-action:manipulation;
-  }
-  .home-section-card:active{transform:scale(.985);}
-  .home-section-icon{
-    width:32px;
-    height:32px;
-    color:var(--home-card-accent);
-    flex:0 0 32px;
-  }
-  .home-section-icon svg{display:block;width:100%;height:100%;}
-  .home-text-glyph,
-  .home-number-glyph{
-    display:grid;
-    place-items:center;
-    width:100%;
-    height:100%;
-    font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif;
-    font-weight:500;
-    letter-spacing:-1.5px;
-  }
-  .home-text-glyph{font-size:32px;line-height:1;}
-  .home-number-glyph{font-size:24px;line-height:1;letter-spacing:-1px;}
-  .home-section-title{
-    margin-top:12px;
-    font-size:17px;
-    line-height:1.15;
-    font-weight:750;
-    letter-spacing:-.2px;
-  }
-  .home-section-sub{
-    margin-top:4px;
-    color:var(--ink2);
-    font-size:12.5px;
-    line-height:1.3;
-  }
-  .home-section-arrow{
-    position:absolute;
-    right:13px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--ink2);
-    font-size:25px;
-    line-height:1;
-    font-weight:300;
-  }
-  .home-footer{
-    margin:18px 4px 3px;
-    color:var(--ink3);
-    text-align:center;
-    font-size:11px;
-  }
-
-  .sections-page-head{
-    margin:2px 2px 16px;
-  }
-  .sections-page-head h1{
-    margin:0;
-    font-size:28px;
-    letter-spacing:-.6px;
-  }
-  .sections-page-head p{
-    margin:6px 0 0;
-    color:var(--ink2);
-    font-size:14px;
-  }
-  .sections-page-grid{
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    padding:2px 2px 8px;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-    overscroll-behavior-x:contain;
-  }
-  .sections-page-grid::-webkit-scrollbar{display:none;}
-  .sections-page-grid .home-section-card{
-    flex:0 0 150px;
-    min-height:132px;
-  }
-  .sections-future{
-    margin-top:12px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .sections-future-icon{
-    width:38px;
-    height:38px;
-    border-radius:12px;
-    display:grid;
-    place-items:center;
-    color:var(--blue);
-    background:color-mix(in srgb,var(--blue) 12%,var(--card));
-    font-size:25px;
-    flex:0 0 38px;
-  }
-  .sections-future strong{
-    display:block;
-    font-size:15px;
-  }
-  .sections-future .muted{
-    margin-top:2px;
-    font-size:12px;
-  }
-
-  body.profile-open .tabbar{display:none !important;}
-
-  .profile-sheet{
-    position:fixed;
-    inset:0;
-    z-index:1500;
-    display:flex;
-    align-items:flex-end;
-    justify-content:center;
-  }
-  .profile-backdrop{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.48);
-    backdrop-filter:blur(4px);
-    -webkit-backdrop-filter:blur(4px);
-  }
-  .profile-panel{
-    position:relative;
-    width:min(100%, 560px);
-    max-height:min(88vh, 700px);
-    overflow:auto;
-    padding:10px 20px calc(30px + 86px + env(safe-area-inset-bottom));
-    border-radius:24px 24px 0 0;
-    background:var(--card);
-    box-shadow:0 -12px 40px rgba(0,0,0,.24);
-    animation:profileSheetIn .22s cubic-bezier(.2,.8,.2,1);
-  }
-  @keyframes profileSheetIn{
-    from{opacity:0;transform:translateY(18px);}
-    to{opacity:1;transform:translateY(0);}
-  }
-  .profile-panel-handle{
-    width:38px;
-    height:5px;
-    border-radius:999px;
-    background:var(--ink3);
-    opacity:.7;
-    margin:0 auto 14px;
-  }
-  .profile-panel-head{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:12px;
-  }
-  .profile-panel-title{font-size:23px;font-weight:800;letter-spacing:-.4px;}
-  .profile-panel-sub{margin-top:4px;color:var(--ink2);font-size:13px;line-height:1.4;max-width:420px;}
-  .profile-close{font-size:26px;line-height:1;}
-  .profile-field-label{
-    display:block;
-    margin:18px 0 7px;
-    color:var(--ink2);
-    font-size:12px;
-    font-weight:700;
-  }
-  .profile-name-input{
-    width:100%;
-    min-height:48px;
-    border-radius:13px;
-    border:1px solid var(--line);
-    background:var(--card2);
-    color:var(--ink);
-    padding:0 14px;
-    font:inherit;
-    outline:none;
-  }
-  .profile-avatar-grid{
-    display:grid;
-    grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:9px;
-  }
-  .profile-avatar{
-    aspect-ratio:1;
-    border-radius:16px;
-    border:1px solid var(--line);
-    background:var(--card2);
-    color:var(--ink);
-    font-size:26px;
-    display:grid;
-    place-items:center;
-  }
-  .profile-avatar.active{
-    border-color:var(--blue);
-    box-shadow:inset 0 0 0 2px var(--blue);
-  }
-  .profile-actions{
-    position:relative;
-    z-index:3;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:9px;
-    margin-top:18px;
-    padding-top:2px;
-  }
-  .profile-actions .btn{
-    min-height:50px;
-    touch-action:manipulation;
-  }
-
-  /* На небольших экранах сохраняем 2x3 и удобную область нажатия. */
-  @media (max-width:420px){
-    .home-header{margin-bottom:12px;}
-    .home-logo{width:34px;height:34px;flex-basis:34px;}
-    .home-brand-text{font-size:25px;}
-    .home-profile{width:40px;height:40px;flex-basis:40px;}
-    .home-hero{min-height:236px;border-radius:19px;}
-    .home-hero-content{min-height:236px;padding:22px 18px 19px;}
-    .home-hero-kicker{font-size:27px;}
-    .home-hero-lesson{font-size:13px;}
-    .home-progress-row{margin-top:13px;}
-    .home-continue-btn{width:100%;min-height:48px;}
-    .home-section-card{min-height:124px;padding:14px;border-radius:18px;}
-    .home-section-title{font-size:16px;}
-    .home-section-sub{font-size:11.5px;}
-    .home-text-glyph{font-size:31px;}
-    .home-number-glyph{font-size:23px;}
-    .profile-avatar-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}
-    .profile-avatar{font-size:23px;border-radius:13px;}
-  }
-
-  /* Планшет: 3 карточки в ряд. */
-  @media (min-width:700px){
-    .sections-page-grid .home-section-card{flex:1 1 0;min-width:0;}
-    .home-hero{min-height:270px;}
-    .home-hero-content{min-height:270px;padding:32px 32px 28px;}
-    .home-sections,
-    .sections-page-grid{
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px;
-    }
-    .home-section-card{min-height:138px;padding:17px;}
-    .home-footer{text-align:left;}
-  }
-
-  /* ПК: нижняя навигация превращается в левую панель. */
-  @media (min-width:1280px) and (min-height:700px){
-    .app{
-      max-width:1300px;
-      padding-left:200px;
-      padding-right:30px;
-      padding-bottom:48px;
-    }
-    .home-shell{max-width:1080px;}
-    .tabbar{
-      position:fixed;
-      left:max(20px, calc(50vw - 640px));
-      right:auto;
-      top:50%;
-      bottom:auto;
-      width:170px;
-      max-width:170px;
-      transform:translateY(-50%);
-      flex-direction:column;
-      align-items:stretch;
-      gap:3px;
-      border-radius:22px;
-      padding:8px;
-    }
-    .tabbar .tab{
-      max-width:none;
-      flex:0 0 auto;
-      min-height:54px;
-      flex-direction:row;
-      justify-content:flex-start;
-      gap:10px;
-      padding:9px 13px;
-      font-size:13px;
-    }
-    .tabbar .ico{width:24px;height:24px;}
-    .tabbar .label{height:auto;}
-    .home-hero{
-      min-height:290px;
-      display:flex;
-      align-items:stretch;
-    }
-    .home-hero-content{
-      width:62%;
-      min-height:290px;
-      justify-content:center;
-      padding:34px 36px;
-    }
-    .home-hero-kicker{font-size:42px;}
-    .home-sections{grid-template-columns:repeat(3,minmax(0,1fr));}
-    .home-section-card{min-height:148px;padding:18px;}
-  }
-
-  /* Телефон/планшет в альбомной ориентации. */
-  @media (max-height:620px) and (orientation:landscape){
-    .home-header{margin-bottom:9px;}
-    .home-hero{min-height:210px;}
-    .home-hero-content{min-height:210px;padding:18px 22px;}
-    .home-hero-kicker{font-size:25px;}
-    .home-section-card{min-height:112px;}
-  }
-
-  /* У активной вкладки больше нет синей подложки. */
-  .tabbar .tab.active{
-    background:transparent;
-    color:var(--blue);
-  }
-
-  @media (display-mode:standalone){
-    .app{
-      padding-top:calc(28px + env(safe-area-inset-top));
-      padding-bottom:calc(96px + env(safe-area-inset-bottom));
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .home-continue-btn,
-    .home-section-card,
-    .profile-panel,
-    .screen-anim{
-      animation:none !important;
-      transition:none !important;
-    }
-  }
 </style>
 </head>
 <body>
@@ -1922,91 +1318,80 @@
    <input type="file" id="backup-file" accept=".json,application/json" style="display:none;">
 
   <div id="screen-menu" class="screen-anim">
-    <div class="home-shell">
-      <header class="home-header">
-        <button class="home-brand" id="main-title" onclick="onTitleTap()" aria-label="Starlight">
-          <span class="home-logo" aria-hidden="true">
-            <img src="./icons/brand-star.svg" alt="">
-          </span>
-          <span class="home-brand-text">Starlight</span>
-        </button>
+    <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
 
-        <button class="home-profile" id="home-profile-btn" onclick="openProfileSheet()" aria-label="Профиль">
-          <span id="home-profile-content" class="home-profile-content" aria-hidden="true"></span>
-        </button>
-      </header>
-
-      <section class="home-hero" aria-label="Продолжение обучения">
-        <div class="home-hero-art" aria-hidden="true"></div>
-        <div class="home-hero-content">
-          <div class="home-hero-kicker">Продолжайте учиться</div>
-          <div class="home-hero-lesson" id="home-lesson-name">Начните обучение</div>
-          <div class="home-hero-detail" id="home-progress-detail">Диктант · 0 из 0 слов</div>
-          <div class="home-progress-row">
-            <div class="home-progress-track"><div class="home-progress-value" id="home-progress-value"></div></div>
-            <span class="home-progress-text" id="home-progress-text">0%</span>
-          </div>
-          <button class="home-continue-btn" id="home-continue-btn" onclick="resumeHomeLesson()">Продолжить урок <span aria-hidden="true">›</span></button>
+    <div class="card-list">
+      <div class="row" onclick="go('lessons')" style="cursor:pointer;">
+        <div class="lesson-badge cur">📚</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Уроки</div>
+          <div class="lesson-progress">Создавай и проходи уроки</div>
         </div>
-      </section>
-
-      <div class="home-section-heading">
-        <h2>Разделы</h2>
-        <button class="home-all-link" onclick="go('sections')">Все разделы <span aria-hidden="true">›</span></button>
-      </div>
-
-      <section class="home-sections" id="home-section-grid" aria-label="Разделы приложения"></section>
-
-      <div class="home-footer">
-        Starlight · © 2026 · Английский язык
+        <span class="chev">›</span>
       </div>
     </div>
-  </div>
 
-  <div id="screen-sections" class="hidden">
-    <div class="topbar">
-      <button class="crumb-link" onclick="go('menu')">‹ Главная</button>
-      <span class="crumb-sep">·</span>
-      <span class="crumb-current">Все разделы</span>
-    </div>
-    <div class="sections-page-head">
-      <h1>Все разделы</h1>
-      <p>Здесь будут появляться новые возможности Starlight.</p>
-    </div>
-    <section class="sections-page-grid" id="sections-page-grid"></section>
-    <div class="sections-future card">
-      <div class="sections-future-icon">＋</div>
-      <div>
-        <strong>Новые разделы</strong>
-        <div class="muted">Место для будущих функций приложения.</div>
-      </div>
-    </div>
-  </div>
-
-  <div id="profile-sheet" class="profile-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="profile-sheet-title">
-    <div class="profile-backdrop" onclick="closeProfileSheet()"></div>
-    <div class="profile-panel">
-      <div class="profile-panel-handle"></div>
-      <div class="profile-panel-head">
-        <div>
-          <div class="profile-panel-title" id="profile-sheet-title">Профиль</div>
-          <div class="profile-panel-sub">Имя и аватар сохраняются только на этом устройстве.</div>
+    <div class="card-list">
+      <div class="row" onclick="go('alphabet')" style="cursor:pointer;">
+        <div class="lesson-badge cur">🔤</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Алфавит</div>
+          <div class="lesson-progress">Изучаем английский алфавит</div>
         </div>
-        <button class="icon-btn profile-close" onclick="closeProfileSheet()" aria-label="Закрыть">×</button>
-      </div>
-
-      <label class="profile-field-label" for="profile-name">Имя</label>
-      <input id="profile-name" class="profile-name-input" type="text" maxlength="24" placeholder="Например, Маша" autocomplete="nickname">
-
-      <div class="profile-field-label">Аватар</div>
-      <div class="profile-avatar-grid" id="profile-avatar-grid"></div>
-
-      <div class="profile-actions">
-        <button class="btn sec" onclick="closeProfileSheet()">Отмена</button>
-        <button class="btn" onclick="saveProfileData()">Сохранить</button>
+        <span class="chev">›</span>
       </div>
     </div>
+
+    <div class="card-list">
+      <div class="row" onclick="go('numbers')" style="cursor:pointer;">
+        <div class="lesson-badge cur">🔢</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Цифры</div>
+          <div class="lesson-progress">От 1 до 100 на английском</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    </div>
+
+    <div class="card-list">
+      <div class="row" onclick="go('vocab')" style="cursor:pointer;">
+        <div class="lesson-badge cur dict-badge">📖</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Словарь</div>
+          <div class="lesson-progress">Список слов и фраз.</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    </div>
+
+    <div class="card-list">
+      <div class="row" onclick="go('help')" style="cursor:pointer;">
+        <div class="lesson-badge cur">💡</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Помощь</div>
+          <div class="lesson-progress">Как учить слова и пользоваться приложением</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    </div>
+
+    <div class="card-list">
+      <div class="row" onclick="go('settings')" style="cursor:pointer;">
+        <div class="lesson-badge cur">⚙️</div>
+        <div style="flex:1;">
+          <div class="lesson-name">Настройки</div>
+          <div class="lesson-progress">Данные, тема и информация о приложении</div>
+        </div>
+        <span class="chev">›</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted" style="text-align:center;">Starlight · © 2026 · Английский язык</div>
+    </div>
+
   </div>
+
 
   <div id="screen-alphabet" class="hidden">
     <div class="topbar">
@@ -2699,7 +2084,6 @@ function exportFullBackup(){
   const data={
     version:1,
     type:'starlight-backup',
-    profile:userProfile,
     app:'Starlight 6',
     createdAt:new Date().toISOString(),
     theme:getTheme(),
@@ -2732,14 +2116,6 @@ function handleBackupImport(e){
         throw new Error('В резервной копии отсутствуют необходимые данные.');
       }
 
-      if(data.profile && typeof data.profile === 'object'){
-        userProfile = {
-          name: typeof data.profile.name === 'string' ? data.profile.name.slice(0,24) : '',
-          avatar: typeof data.profile.avatar === 'string' ? data.profile.avatar : '🙂'
-        };
-        saveProfile();
-      }
-
       if(!confirm('Восстановить резервную копию?\n\nТекущие мои слова, уроки и прогресс будут заменены данными из файла.')) return;
 
       USER_WORDS=normalizeUserWords(data.userWords);
@@ -2757,7 +2133,6 @@ function handleBackupImport(e){
 
       progress=(data.progress && typeof data.progress==='object') ? data.progress : {};
       state={screen:'menu',activeLessonId:null,editingLessonId:null,exercise:null};
-      renderHomeProfile();
       saveUserWords();
       saveLessons();
       saveProgress();
@@ -2784,13 +2159,11 @@ function resetAllUserData(){
     localStorage.removeItem(LS_LESSONS);
     localStorage.removeItem(LS_STATE);
     localStorage.removeItem(LS_PROGRESS);
-    localStorage.removeItem(LS_PROFILE);
   }catch(e){}
 
   USER_WORDS=[];
   lessons=[];
   progress={};
-  userProfile={name:'',avatar:'🙂'};
   state={screen:'menu',activeLessonId:null,editingLessonId:null,exercise:null};
   refreshWordIndexes();
   go('menu');
@@ -2813,187 +2186,8 @@ function updateSettingsConnectionStatus(){
   dot.classList.toggle('offline', offline);
 }
 
-
-/* ============================================================
- * НОВАЯ ГЛАВНАЯ / ПРОФИЛЬ
- * ============================================================ */
-const LS_PROFILE = 'en6_profile_v1';
-let userProfile = { name:'', avatar:'🙂' };
-
-const HOME_SECTIONS = [
-  {key:'lessons', title:'Уроки', sub:'Темы и задания'},
-  {key:'vocab', title:'Словарь', sub:'Все слова'},
-  {key:'alphabet', title:'Алфавит', sub:'Буквы и звуки'},
-  {key:'numbers', title:'Цифры', sub:'Числа и даты'},
-  {key:'help', title:'Помощь', sub:'Подсказки'},
-  {key:'settings', title:'Настройки', sub:'Тема и язык'}
-];
-
-function homeIcon(key){
-  const icons = {
-    lessons:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2 12 3l9 5.2-9 5-9-5Z"/><path d="M6 10.2V16c2.6 2.2 9.4 2.2 12 0v-5.8"/><path d="M21 9v5"/></svg>',
-    vocab:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6.2A3.8 3.8 0 0 1 13 8.8V20a3 3 0 0 0-3-2H3V5Z"/><path d="M21 5h-6.2A3.8 3.8 0 0 0 11 8.8V20a3 3 0 0 1 3-2h7V5Z"/></svg>',
-    alphabet:'<span class="home-text-glyph">Aa</span>',
-    numbers:'<span class="home-number-glyph">123</span>',
-    help:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.7 9.2a2.5 2.5 0 1 1 4.3 1.7c-1.4 1.2-2 1.7-2 3.1"/><path d="M12 17.2h.01"/></svg>',
-    settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m18.9 13.5.7.4a1.7 1.7 0 0 1-1.7 2.9l-.7-.4a1.7 1.7 0 0 0-2.6 1.5v.8a1.7 1.7 0 0 1-3.4 0v-.8a1.7 1.7 0 0 0-2.6-1.5l-.7.4a1.7 1.7 0 0 1-1.7-2.9l.7-.4a1.7 1.7 0 0 0 0-3L6.2 10a1.7 1.7 0 0 1 1.7-2.9l.7.4a1.7 1.7 0 0 0 2.6-1.5v-.8a1.7 1.7 0 0 1 3.4 0V6a1.7 1.7 0 0 0 2.6 1.5l.7-.4a1.7 1.7 0 0 1 1.7 2.9l-.7.4a1.7 1.7 0 0 0 0 3Z"/></svg>'
-  };
-  return icons[key] || icons.help;
-}
-function loadProfile(){
-  try{
-    const raw = localStorage.getItem(LS_PROFILE);
-    if(raw){
-      const parsed = JSON.parse(raw);
-      if(parsed && typeof parsed === 'object'){
-        userProfile = {
-          name: typeof parsed.name === 'string' ? parsed.name.slice(0,24) : '',
-          avatar: typeof parsed.avatar === 'string' ? parsed.avatar : '🙂'
-        };
-      }
-    }
-  }catch(e){
-    userProfile = {name:'', avatar:'🙂'};
-  }
-}
-
-function saveProfile(){
-  try{ localStorage.setItem(LS_PROFILE, JSON.stringify(userProfile)); }catch(e){}
-}
-
-function profilePersonIcon(){
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9.2" r="2.5"/><path d="M7.5 18.2c.9-2.1 2.5-3.2 4.5-3.2s3.6 1.1 4.5 3.2"/></svg>';
-}
-
-function renderHomeProfile(){
-  const box = $('home-profile-content');
-  if(!box) return;
-  box.innerHTML = userProfile.name ? esc(userProfile.avatar) : profilePersonIcon();
-  box.setAttribute('aria-label', userProfile.name ? esc(userProfile.name) : 'Профиль');
-}
-
-function renderHomeSectionCard(item){
-  return '<button class="home-section-card" onclick="go(\''+item.key+'\')" aria-label="'+esc(item.title)+'">'+
-    '<span class="home-section-icon">'+homeIcon(item.key)+'</span>'+
-    '<span class="home-section-title">'+esc(item.title)+'</span>'+
-    '<span class="home-section-sub">'+esc(item.sub)+'</span>'+
-    '<span class="home-section-arrow" aria-hidden="true">›</span>'+
-  '</button>';
-}
-
-function renderHomeSections(){
-  const grid=$('home-section-grid');
-  if(grid) grid.innerHTML=HOME_SECTIONS.map(renderHomeSectionCard).join('');
-  const all=$('sections-page-grid');
-  if(all) all.innerHTML=HOME_SECTIONS.map(renderHomeSectionCard).join('');
-}
-
-function getHomeLesson(){
-  const active = state.activeLessonId && lessons.find(l=>l.id===state.activeLessonId);
-  return active || lessons[0] || null;
-}
-
-function homeExerciseRatio(lessonId, key, total){
-  if(!total) return 0;
-  if(isExDone(lessonId,key,total)) return 1;
-  const solved=exSolvedCount(lessonId,key);
-  return Math.max(0, Math.min(1, solved/total));
-}
-
-function getHomeLessonProgress(lesson){
-  if(!lesson || !lesson.wordIds.length) return 0;
-  const total=lesson.wordIds.length;
-  const sum=EX_ORDER.reduce((acc,key)=>acc+homeExerciseRatio(lesson.id,key,total),0);
-  return Math.round((sum/EX_ORDER.length)*100);
-}
-
-function getFirstIncompleteExercise(lesson){
-  if(!lesson) return 'dictation';
-  const total=lesson.wordIds.length;
-  return EX_ORDER.find(key=>!isExDone(lesson.id,key,total)) || 'dictation';
-}
-
-function renderHome(){
-  renderHomeSections();
-  renderHomeProfile();
-
-  const lesson=getHomeLesson();
-  const nameEl=$('home-lesson-name');
-  const detailEl=$('home-progress-detail');
-  const pctEl=$('home-progress-text');
-  const valEl=$('home-progress-value');
-  const btn=$('home-continue-btn');
-
-  if(!lesson){
-    if(nameEl) nameEl.textContent='Пока нет уроков';
-    if(detailEl) detailEl.textContent='Создайте первый урок, чтобы начать учиться.';
-    if(pctEl) pctEl.textContent='0%';
-    if(valEl) valEl.style.width='0%';
-    if(btn){
-      btn.disabled=false;
-      btn.innerHTML='＋ Создать урок';
-    }
-    return;
-  }
-
-  const total=lesson.wordIds.length;
-  const solved=isExDone(lesson.id,'dictation',total)
-    ? total
-    : Math.min(exSolvedCount(lesson.id,'dictation'), total);
-  const pct=total ? Math.round((solved/total)*100) : 0;
-
-  if(nameEl) nameEl.textContent=lesson.name || 'Урок';
-  if(detailEl) detailEl.textContent='Диктант · ' + solved + ' из ' + total + ' слов';
-  if(pctEl) pctEl.textContent=pct+'%';
-  if(valEl) valEl.style.width=pct+'%';
-  if(btn){
-    btn.disabled=false;
-    btn.innerHTML='Продолжить урок <span aria-hidden="true">›</span>';
-  }
-}
-function resumeHomeLesson(){
-  const lesson=getHomeLesson();
-  if(!lesson){
-    openLessonEditor(null);
-    return;
-  }
-  openLesson(lesson.id);
-  setTimeout(()=>{
-    const key=getFirstIncompleteExercise(lesson);
-    startExercise(key,false);
-  },0);
-}
-function openProfileSheet(){
-  const sheet=$('profile-sheet');
-  if(!sheet) return;
-  $('profile-name').value=userProfile.name || '';
-  const avatars=['🙂','🧑‍🎓','🦊','🚀','🐱','🦁','🐼','🦄','🐸','🐨','🐯','🦖'];
-  $('profile-avatar-grid').innerHTML=avatars.map((a)=>'<button type="button" class="profile-avatar '+(a===userProfile.avatar?'active':'')+'" data-avatar="'+a+'" onclick="selectProfileAvatar(this.dataset.avatar)" aria-label="Аватар '+a+'">'+a+'</button>').join('');
-  sheet.classList.remove('hidden');
-  document.body.classList.add('profile-open');
-  setTimeout(()=>$('profile-name')?.focus(),40);
-}
-
-function closeProfileSheet(){
-  $('profile-sheet')?.classList.add('hidden');
-  document.body.classList.remove('profile-open');
-}
-
-function selectProfileAvatar(avatar){
-  userProfile.avatar=avatar;
-  document.querySelectorAll('.profile-avatar').forEach(b=>b.classList.toggle('active',b.dataset.avatar===avatar));
-}
-
-function saveProfileData(){
-  const value=($('profile-name')?.value || '').trim().slice(0,24);
-  userProfile.name=value;
-  saveProfile();
-  renderHomeProfile();
-  closeProfileSheet();
-}
-
 function show(id){
-  const screens = ['screen-menu','screen-sections','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
+  const screens = ['screen-menu','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
   screens.forEach(x=>{
     const el = $(x);
     const isTarget = x === id;
@@ -3013,8 +2207,7 @@ function show(id){
 }
 function go(screen){
   state.screen = screen; saveState();
-  if(screen==='menu'){ show('screen-menu'); renderHome(); }
-  else if(screen==='sections'){ show('screen-sections'); renderHomeSections(); }
+  if(screen==='menu') show('screen-menu');
   else if(screen==='alphabet'){ show('screen-alphabet'); renderAlphabet(); }
   else if(screen==='numbers'){ show('screen-numbers'); renderNumbers(); }
   else if(screen==='vocab'){ show('screen-vocab'); renderVocab(); }
@@ -4340,12 +3533,10 @@ async function boot(){
   loadProgress();
 
   // 4. Интерфейс.
-  loadProfile();
   buildAZ();
 
   if(state.screen === 'vocab') go('vocab');
   else if(state.screen === 'lessons') go('lessons');
-  else if(state.screen === 'sections') go('sections');
   else go('menu');
 
   // 5. Обработчики.
