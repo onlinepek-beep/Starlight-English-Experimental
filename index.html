@@ -1362,6 +1362,11 @@
     font-weight:800;
     letter-spacing:-.7px;
     max-width:340px;
+    color:#a9d7ff;
+  }
+  html[data-theme="light"] .home-progress-title{color:#174c9d;}
+  @media (prefers-color-scheme:light){
+    html[data-theme="system"] .home-progress-title{color:#174c9d;}
   }
   .home-progress-lesson{
     margin-top:8px;
@@ -2357,6 +2362,7 @@ function renderHomeProgress(){
     detail.textContent='Создайте первый урок, чтобы начать учиться.';
     fill.style.width='0%';
     pct.textContent='0%';
+    btn.disabled=false;
     btn.textContent='＋ Создать урок';
     btn.onclick=()=>openLessonEditor(null);
     return;
@@ -2367,15 +2373,24 @@ function renderHomeProgress(){
     ? total
     : Math.min(exSolvedCount(lesson.id,'dictation'), total);
   const percent=total ? Math.round((solved/total)*100) : 0;
+  const finished=isExDone(lesson.id,'dictation',total);
 
   name.textContent=lesson.name || 'Последний урок';
-  detail.textContent='Диктант · Выучено ' + solved + ' из ' + total + ' слов';
+  detail.textContent=finished
+    ? 'Диктант завершён · ' + solved + ' из ' + total + ' слов'
+    : 'Диктант · Выучено ' + solved + ' из ' + total + ' слов';
   fill.style.width=percent+'%';
   pct.textContent=percent+'%';
-  btn.textContent='Продолжить урок';
-  btn.onclick=()=>resumeHomeLesson();
-}
+  btn.disabled=false;
 
+  if(finished){
+    btn.textContent='＋ Создать урок';
+    btn.onclick=()=>openLessonEditor(null);
+  }else{
+    btn.textContent='Продолжить урок';
+    btn.onclick=()=>homeProgressAction();
+  }
+}
 function homeProgressAction(){
   const lesson=getHomeLastLesson();
   if(!lesson){
