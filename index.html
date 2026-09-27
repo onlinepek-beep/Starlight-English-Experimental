@@ -2937,7 +2937,9 @@ function renderHome(){
   }
 
   const total=lesson.wordIds.length;
-  const solved=Math.min(exSolvedCount(lesson.id,'dictation'), total);
+  const solved=isExDone(lesson.id,'dictation',total)
+    ? total
+    : Math.min(exSolvedCount(lesson.id,'dictation'), total);
   const pct=total ? Math.round((solved/total)*100) : 0;
 
   if(nameEl) nameEl.textContent=lesson.name || 'Урок';
