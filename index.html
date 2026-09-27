@@ -1328,6 +1328,133 @@
     min-width:0;
   }
 
+  /* ===== HOME: МИНИ-ПРОФИЛЬ ===== */
+  .home-header{
+    position:relative;
+  }
+  .home-header .large-title{
+    padding-right:60px;
+  }
+  .home-profile-btn{
+    position:absolute;
+    top:8px;
+    right:0;
+    width:48px;
+    height:48px;
+    min-width:48px;
+    min-height:48px;
+    padding:0;
+    border-radius:50%;
+    background:var(--card2);
+    color:var(--ink);
+    border:1px solid var(--line);
+    display:grid;
+    place-items:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.20);
+    font-size:25px;
+    line-height:1;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .home-profile-btn:active{transform:scale(.93); background:var(--card3);}
+  .home-greeting{
+    margin:-4px 4px 14px;
+    color:var(--ink);
+    font-size:20px;
+    font-weight:750;
+    letter-spacing:-.2px;
+  }
+  .profile-popover{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:calc(74px + env(safe-area-inset-top)) 16px 24px;
+    background:rgba(0,0,0,.42);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+  .profile-popover.hidden{display:none !important;}
+  .profile-card{
+    width:min(100%,420px);
+    background:var(--card);
+    color:var(--ink);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:0 18px 50px rgba(0,0,0,.35);
+  }
+  .profile-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .profile-head h2{
+    margin:0;
+    font-size:22px;
+    line-height:1.15;
+    letter-spacing:-.3px;
+  }
+  .profile-close{
+    width:38px;
+    height:38px;
+    min-width:38px;
+    min-height:38px;
+    border-radius:12px;
+    background:var(--card2);
+    color:var(--ink2);
+    font-size:20px;
+  }
+  .profile-preview{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .profile-preview-avatar{
+    width:58px;
+    height:58px;
+    min-width:58px;
+    border-radius:50%;
+    background:var(--card2);
+    display:grid;
+    place-items:center;
+    font-size:31px;
+  }
+  .profile-preview-copy{min-width:0;}
+  .profile-preview-name{font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .profile-preview-sub{margin-top:2px;color:var(--ink2);font-size:13px;}
+  .profile-emojis{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:8px;
+    margin-top:10px;
+  }
+  .profile-emoji{
+    min-height:46px;
+    border-radius:12px;
+    background:var(--card2);
+    color:var(--ink);
+    font-size:24px;
+    display:grid;
+    place-items:center;
+    border:2px solid transparent;
+  }
+  .profile-emoji.active{
+    border-color:var(--blue);
+    background:rgba(10,132,255,.14);
+  }
+  .profile-actions{display:flex;gap:8px;margin-top:16px;}
+  .profile-actions .btn{flex:1;}
+  @media (max-width:520px){
+    .home-profile-btn{top:4px;}
+    .home-greeting{font-size:19px;}
+    .profile-emojis{grid-template-columns:repeat(6,1fr);gap:7px;}
+  }
+
   /* ===== HOME: ПРОГРЕСС ПО ПОСЛЕДНЕМУ ДИКТАНТУ ===== */
   .home-progress-card{
     position:relative;
@@ -1522,7 +1649,11 @@
    <input type="file" id="backup-file" accept=".json,application/json" style="display:none;">
 
   <div id="screen-menu" class="screen-anim">
-    <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
+    <div class="home-header">
+      <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
+      <button class="home-profile-btn" id="home-profile-btn" type="button" aria-label="Профиль" onclick="openProfile()"><span id="home-profile-avatar">🐼</span></button>
+    </div>
+    <div class="home-greeting" id="home-greeting">Привет! 👋</div>
 
     <section class="home-progress-card" aria-label="Прогресс последнего урока">
       <div class="home-progress-art" aria-hidden="true"></div>
@@ -1969,6 +2100,43 @@
     </div>
   </div>
 
+</div>
+
+<div id="profile-popover" class="profile-popover hidden" role="dialog" aria-modal="true" aria-labelledby="profile-title" onclick="closeProfile()">
+  <div class="profile-card" onclick="event.stopPropagation()">
+    <div class="profile-head">
+      <h2 id="profile-title">Профиль</h2>
+      <button class="profile-close" type="button" aria-label="Закрыть" onclick="closeProfile()">×</button>
+    </div>
+    <div class="profile-preview">
+      <div class="profile-preview-avatar" id="profile-preview-avatar">🐼</div>
+      <div class="profile-preview-copy">
+        <div class="profile-preview-name" id="profile-preview-name">Ученик</div>
+        <div class="profile-preview-sub">Имя и смайлик сохраняются только на этом устройстве.</div>
+      </div>
+    </div>
+    <div class="field-label">Имя</div>
+    <input type="text" id="profile-name-input" maxlength="24" placeholder="Например, Маша" autocomplete="off">
+    <div class="field-label" style="margin-top:14px;">Выбери аватар</div>
+    <div class="profile-emojis" id="profile-emojis">
+      <button class="profile-emoji" type="button" data-avatar="🐼" onclick="selectProfileAvatar('🐼')">🐼</button>
+      <button class="profile-emoji" type="button" data-avatar="🦊" onclick="selectProfileAvatar('🦊')">🦊</button>
+      <button class="profile-emoji" type="button" data-avatar="🐯" onclick="selectProfileAvatar('🐯')">🐯</button>
+      <button class="profile-emoji" type="button" data-avatar="🐰" onclick="selectProfileAvatar('🐰')">🐰</button>
+      <button class="profile-emoji" type="button" data-avatar="🐸" onclick="selectProfileAvatar('🐸')">🐸</button>
+      <button class="profile-emoji" type="button" data-avatar="🐨" onclick="selectProfileAvatar('🐨')">🐨</button>
+      <button class="profile-emoji" type="button" data-avatar="🦄" onclick="selectProfileAvatar('🦄')">🦄</button>
+      <button class="profile-emoji" type="button" data-avatar="🚀" onclick="selectProfileAvatar('🚀')">🚀</button>
+      <button class="profile-emoji" type="button" data-avatar="⭐" onclick="selectProfileAvatar('⭐')">⭐</button>
+      <button class="profile-emoji" type="button" data-avatar="🐱" onclick="selectProfileAvatar('🐱')">🐱</button>
+      <button class="profile-emoji" type="button" data-avatar="🐶" onclick="selectProfileAvatar('🐶')">🐶</button>
+      <button class="profile-emoji" type="button" data-avatar="🌈" onclick="selectProfileAvatar('🌈')">🌈</button>
+    </div>
+    <div class="profile-actions">
+      <button class="btn sec" type="button" onclick="closeProfile()">Отмена</button>
+      <button class="btn" type="button" onclick="saveProfile()">Сохранить</button>
+    </div>
+  </div>
 </div>
 
 <div class="tabbar" id="tabbar">
@@ -2457,6 +2625,86 @@ function updateSettingsConnectionStatus(){
   dot.classList.toggle('offline', offline);
 }
 
+const LS_PROFILE = 'en6_profile_v1';
+const PROFILE_DEFAULT_AVATAR = '🐼';
+let profileDraftAvatar = PROFILE_DEFAULT_AVATAR;
+
+function getProfile(){
+  try{
+    const raw = localStorage.getItem(LS_PROFILE);
+    if(!raw) return { name:'', avatar:PROFILE_DEFAULT_AVATAR };
+    const data = JSON.parse(raw);
+    return {
+      name: typeof data.name === 'string' ? data.name.trim().slice(0,24) : '',
+      avatar: typeof data.avatar === 'string' && data.avatar.trim() ? data.avatar : PROFILE_DEFAULT_AVATAR
+    };
+  }catch(e){
+    return { name:'', avatar:PROFILE_DEFAULT_AVATAR };
+  }
+}
+
+function saveProfileData(name, avatar){
+  const payload = {
+    name: String(name || '').trim().slice(0,24),
+    avatar: avatar || PROFILE_DEFAULT_AVATAR
+  };
+  try{ localStorage.setItem(LS_PROFILE, JSON.stringify(payload)); }catch(e){}
+  return payload;
+}
+
+function renderProfileUI(){
+  const profile = getProfile();
+  const avatar = $('home-profile-avatar');
+  const greeting = $('home-greeting');
+  const previewAvatar = $('profile-preview-avatar');
+  const previewName = $('profile-preview-name');
+  if(avatar) avatar.textContent = profile.avatar;
+  if(greeting) greeting.textContent = profile.name ? 'Привет, ' + profile.name + '! 👋' : 'Привет! 👋';
+  if(previewAvatar) previewAvatar.textContent = profile.avatar;
+  if(previewName) previewName.textContent = profile.name || 'Ученик';
+
+  qsa('.profile-emoji').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.avatar === profile.avatar);
+  });
+}
+
+function openProfile(){
+  const pop = $('profile-popover');
+  if(!pop) return;
+  const profile = getProfile();
+  const input = $('profile-name-input');
+  profileDraftAvatar = profile.avatar;
+  if(input) input.value = profile.name;
+  renderProfileUI();
+  pop.classList.remove('hidden');
+  setTimeout(()=>{ if(input) input.focus(); }, 40);
+}
+
+function closeProfile(){
+  const pop = $('profile-popover');
+  if(pop) pop.classList.add('hidden');
+}
+
+function selectProfileAvatar(avatar){
+  profileDraftAvatar = avatar || PROFILE_DEFAULT_AVATAR;
+  qsa('.profile-emoji').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.avatar === profileDraftAvatar);
+  });
+  const preview = $('profile-preview-avatar');
+  if(preview) preview.textContent = profileDraftAvatar;
+}
+
+function saveProfile(){
+  const input = $('profile-name-input');
+  const profile = saveProfileData(input ? input.value : '', profileDraftAvatar);
+  const avatar = $('home-profile-avatar');
+  const greeting = $('home-greeting');
+  if(avatar) avatar.textContent = profile.avatar;
+  if(greeting) greeting.textContent = profile.name ? 'Привет, ' + profile.name + '! 👋' : 'Привет! 👋';
+  renderHomeProgress();
+  closeProfile();
+}
+
 function show(id){
   const screens = ['screen-menu','screen-sections','screen-alphabet','screen-numbers','screen-vocab','screen-lessons','screen-editor','screen-lesson','screen-help','screen-settings'];
   screens.forEach(x=>{
@@ -2492,8 +2740,9 @@ function renderHomeProgress(){
   if(!name || !detail || !fill || !pct || !btn) return;
 
   if(!lesson){
-    name.textContent='Пока нет уроков';
-    detail.textContent='Создайте первый урок, чтобы начать учиться.';
+    const profile = getProfile();
+    name.textContent=profile.name ? profile.name + ', начнём?' : 'Пока нет уроков';
+    detail.textContent=profile.name ? 'Создадим твой первый урок.' : 'Создайте первый урок, чтобы начать учиться.';
     fill.style.width='0%';
     pct.textContent='0%';
     btn.disabled=false;
@@ -3825,14 +4074,15 @@ function finishExercise(complete){
   const emojiEl = $('ex-finish-emoji');
   const titleEl = $('ex-finish-title');
 
+  const profile = getProfile();
   if(done){
     emojiEl.textContent = '🎉';
-    titleEl.textContent = 'Молодец!';
+    titleEl.textContent = profile.name ? 'Молодец, ' + profile.name + '!' : 'Молодец!';
     $('ex-finish-text').textContent = 'Упражнение пройдено';
     retry.classList.add('hidden');
   } else {
     emojiEl.textContent = '🤔';
-    titleEl.textContent = 'Почти получилось';
+    titleEl.textContent = profile.name ? 'Почти получилось, ' + profile.name : 'Почти получилось';
     $('ex-finish-text').textContent = `Пройдено ${solved} / ${total}. Доделать?`;
     retry.classList.remove('hidden');
   }
@@ -3846,6 +4096,7 @@ function finishExercise(complete){
  */
 async function boot(){
   applyTheme(getTheme());
+  renderProfileUI();
   // 1. Словарь — единственное, что критично для запуска.
   try{
     await loadVocabulary();
