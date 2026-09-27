@@ -304,6 +304,9 @@
   }
   .lesson-badge.done{ background:var(--green); color:#003018; }
   .lesson-badge.cur{ background:var(--blue); color:#fff; }
+  .lesson-badge.dict-badge{
+    font-size:16px;
+  }
 
   .lesson-info{
     flex:1;
@@ -893,7 +896,7 @@
 
     <div class="card-list">
       <div class="row" onclick="go('vocab')" style="cursor:pointer;">
-        <div class="lesson-badge cur">📖</div>
+        <div class="lesson-badge cur dict-badge">📖</div>
         <div style="flex:1;">
           <div class="lesson-name">Словарь</div>
           <div class="lesson-progress">Список слов и фраз.</div>
