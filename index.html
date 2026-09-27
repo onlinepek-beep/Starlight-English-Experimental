@@ -1778,10 +1778,10 @@ function renderLocalEditorResults(items){
   if(!items.length){ box.innerHTML = '<div class="muted">Ничего не найдено.</div>'; return false; }
   box.innerHTML = items.map(w=>{
     const inL = editor.wordIds.includes(w.id);
-    const id = String(w.id).replace(/'/g, "\\\\'");
+    const id = String(w.id).replace(/'/g, "\\'");
     return '<div class="chosen-item">' +
       '<div class="t"><b>' + esc(w.english) + ' ' + (w.partOfSpeech ? '<span class="muted">' + esc(w.partOfSpeech) + '</span>' : '') + '</b><span>' + esc(w.translation||'—') + '</span><small class="muted" style="display:block;margin-top:5px;">' + sourceLabel(w) + '</small></div>' +
-      '<button class="icon-btn" ' + (inL?'disabled':'') + ' onclick="addWord(\\'' + id + '\\')" style="' + (inL?'background:rgba(48,209,88,.2); color:var(--green);':'') + '">' + (inL?'✓':'＋') + '</button>' +
+      '<button class="icon-btn" ' + (inL?'disabled':'') + ' onclick="addWord(\'' + id + '\')" style="' + (inL?'background:rgba(48,209,88,.2); color:var(--green);':'') + '">' + (inL?'✓':'＋') + '</button>' +
       '</div>';
   }).join('');
   return true;
