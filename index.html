@@ -499,6 +499,19 @@
   .speak-big:active{transform:scale(.94); background:var(--blue-d);}
   .listen-word{font-size:34px; font-weight:800; margin:8px 0 6px; letter-spacing:-0.6px;}
   .listen-tr{font-size:18px; color:var(--ink2); margin-bottom:18px;}
+  .listen-list{overflow:hidden;}
+  .listen-item{display:flex; align-items:center; gap:12px; padding:13px 4px; border-bottom:1px solid var(--line); border-radius:10px; transition:background .12s ease;}
+  .listen-item:last-child{border-bottom:none;}
+  .listen-item.active{background:rgba(10,132,255,.10);}
+  .listen-item.done{background:rgba(48,209,88,.07);}
+  .listen-item .speak{flex-shrink:0;}
+  .listen-item .listen-main{flex:1; min-width:0;}
+  .listen-item .listen-en{font-weight:700; font-size:17px;}
+  .listen-item .listen-pos{color:var(--ink2); font-size:12px; margin-left:6px;}
+  .listen-item .listen-ipa{color:var(--ink3); font-size:13px; margin-top:2px;}
+  .listen-item .listen-ru{color:var(--ink2); font-size:15px; margin-top:2px;}
+  .listen-item .listen-extra{color:var(--ink3); font-size:12px; margin-top:5px;}
+  .listen-item .listen-check{width:26px; min-width:26px; text-align:center; font-size:18px; color:var(--green);}
 
   #dict-input{font-size:20px; text-align:center; font-weight:600; letter-spacing:.3px;}
 
@@ -2112,44 +2125,111 @@ function startExercise(kind, reset){
 }
 
 let listenState = null;
-function runListen(){ listenState = { i:0, auto:false, timer:null }; renderListen(); }
-function renderListen(){
-  const words = lessonWords(); const st = listenState; const w = words[st.i];
-  $('ex-area').innerHTML = `
-    <div class="card center">
-      <div class="muted" style="font-size:13px;">Слово ${st.i+1} из ${words.length}</div>
-      <div class="progress" style="margin:10px 0 18px;"><i style="width:${(st.i/words.length*100).toFixed(1)}%"></i></div>
-      <button class="speak-big" onclick="speakEN(${JSON.stringify(w.english).replace(/"/g,'&quot;')})">🔊</button>
-      <div class="listen-word">${esc(w.english)}</div>
-      <div class="listen-tr">${esc(w.translation||'—')}</div>
-      <div class="row" style="justify-content:center;">
-        <button class="btn sec" onclick="listenPrev()">⬅️</button>
-        <button class="btn" onclick="listenPlay()">🔊</button>
-        <button class="btn sec" onclick="listenNext()">➡️</button>
-      </div>
-      <div class="row" style="justify-content:center; margin-top:12px;">
-        <button class="btn ghost" onclick="listenToggleAuto()">${st.auto?'⏸ Стоп':'▶️ Авто'}</button>
-      </div>
-    </div>`;
-}
-function listenPlay(){ speakEN(lessonWords()[listenState.i].english); }
-function listenPrev(){ if(listenState.i>0){ listenState.i--; renderListen(); } }
-function listenNext(){
+
+function runListen(){
+  const solved = new Set(exSolvedIds(currentLesson.id, 'listen').map(id=>String(id)));
+  listenState = { auto:false, timer:null, activeId:null, solved };
   const words = lessonWords();
-  if(listenState.i < words.length-1){ listenState.i++; renderListen(); }
-  else { listenStopAuto(); markDone(currentLesson.id, 'listen'); finishExercise(true); }
+  if(words.length && solved.size >= words.length){
+    markDone(currentLesson.id, 'listen');
+    finishExercise(true);
+    return;
+  }
+  renderListen();
 }
-function listenToggleAuto(){ listenState.auto ? listenStopAuto() : listenStartAuto(); }
-function listenStartAuto(){ listenState.auto = true; renderListen(); speakEN(lessonWords()[listenState.i].english); listenSchedule(); }
-function listenSchedule(){
-  listenState.timer = setTimeout(()=>{
-    if(!listenState || !listenState.auto) return;
-    const words = lessonWords();
-    if(listenState.i < words.length-1){ listenState.i++; renderListen(); speakEN(words[listenState.i].english); listenSchedule(); }
-    else { listenStopAuto(); markDone(currentLesson.id, 'listen'); finishExercise(true); }
-  }, 2600);
+function listenCountDone(){
+  return listenState ? listenState.solved.size : 0;
 }
-function listenStopAuto(){ if(listenState){ listenState.auto=false; clearTimeout(listenState.timer); } }
+function listenPlayWord(id){
+  const words = lessonWords();
+  const w = words.find(x=>sameWordId(x.id,id));
+  if(!w) return;
+  listenState.activeId = w.id;
+  listenState.solved.add(String(w.id));
+  markSolved(currentLesson.id, 'listen', w.id, words.length);
+  speakEN(w.english);
+  renderListen();
+  if(listenState.solved.size >= words.length){
+    listenStopAuto();
+    markDone(currentLesson.id, 'listen');
+    setTimeout(()=>finishExercise(true), 650);
+  }
+}
+function renderListen(){
+  const words = lessonWords();
+  const st = listenState;
+  if(!words.length){
+    $('ex-area').innerHTML='<div class="card muted">В уроке пока нет слов.</div>';
+    return;
+  }
+  const done=listenCountDone();
+  const pct=(done/words.length*100).toFixed(0);
+  const listHtml=words.map(w=>{
+    const doneWord=st.solved.has(String(w.id));
+    const active=st.activeId!==null && sameWordId(st.activeId,w.id);
+    const pos=w.partOfSpeech ? '<span class="listen-pos">'+esc(w.partOfSpeech)+'</span>' : '';
+    const ipa=w.transcription ? '<div class="listen-ipa">'+esc(w.transcription)+'</div>' : '';
+    const ruTr=w.russianTranscription ? '<div class="listen-extra">рус. '+esc(w.russianTranscription)+'</div>' : '';
+    return '<div class="listen-item '+(active?'active ':'')+(doneWord?'done':'')+'">'+
+      '<button class="speak" onclick="listenPlayWord('+JSON.stringify(w.id).replace(/"/g,'&quot;')+')" title="Прослушать">🔊</button>'+
+      '<div class="listen-main"><div><span class="listen-en">'+esc(w.english)+'</span>'+pos+'</div>'+
+      ipa+'<div class="listen-ru">'+esc(w.translation||'—')+'</div>'+
+      '<div class="listen-extra">'+sourceLabel(w)+(active?' · сейчас':'')+'</div></div>'+
+      '<div class="listen-check">'+(doneWord?'✓':'')+'</div>'+
+      '</div>';
+  }).join('');
+  $('ex-area').innerHTML=
+    '<div class="card">'+
+      '<div class="row" style="justify-content:space-between; margin-bottom:10px;">'+
+        '<span class="muted" style="font-size:13px;">Прослушано: '+done+' / '+words.length+'</span>'+
+        '<span class="muted" style="font-size:13px;">'+(st.auto?'▶️ Воспроизведение':'Слушать слова')+'</span>'+
+      '</div>'+
+      '<div class="progress"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="vocab-actions" style="margin:12px 0;">'+
+        '<button class="btn" onclick="listenToggleAuto()">'+(st.auto?'⏸ Стоп':'▶️ Воспроизвести все')+'</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="card listen-list">'+listHtml+'</div>';
+}
+function listenToggleAuto(){
+  if(!listenState) return;
+  listenState.auto ? listenStopAuto() : listenStartAuto();
+}
+function listenStartAuto(){
+  if(!listenState) return;
+  const words=lessonWords();
+  listenState.auto=true;
+  listenState.activeId=null;
+  renderListen();
+  listenSchedule(0);
+}
+function listenSchedule(index){
+  if(!listenState || !listenState.auto) return;
+  const words=lessonWords();
+  let i=index;
+  while(i<words.length && listenState.solved.has(String(words[i].id))) i++;
+  if(i>=words.length){
+    listenStopAuto();
+    markDone(currentLesson.id,'listen');
+    setTimeout(()=>finishExercise(true),650);
+    return;
+  }
+  const w=words[i];
+  listenState.activeId=w.id;
+  listenState.solved.add(String(w.id));
+  markSolved(currentLesson.id,'listen',w.id,words.length);
+  renderListen();
+  speakEN(w.english);
+  listenState.timer=setTimeout(()=>listenSchedule(i+1),2400);
+}
+function listenStopAuto(){
+  if(!listenState) return;
+  listenState.auto=false;
+  clearTimeout(listenState.timer);
+  listenState.timer=null;
+  stopSpeech();
+  renderListen();
+}
 
 let cardsState = null;
 function runCards(unsolved, total){ cardsState = { queue: shuffle(unsolved.slice()), i: 0, total: total, mode: null }; renderCardsMode(); }
