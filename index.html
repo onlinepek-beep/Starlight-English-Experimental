@@ -505,11 +505,28 @@
   .ex-row:active{background:var(--card2); transform:scale(.99);}
 
   .ex-icon{
-    min-width:40px; height:40px; border-radius:50%;
-    background:var(--card2); color:var(--ink2);
-    display:flex; align-items:center; justify-content:center;
-    font-size:16px; font-weight:700;
-    transition:background .15s ease, color .15s ease;
+    box-sizing:border-box;
+    width:44px;
+    min-width:44px;
+    max-width:44px;
+    height:44px;
+    min-height:44px;
+    max-height:44px;
+    aspect-ratio:1 / 1;
+    flex:0 0 44px;
+    border-radius:13px;
+    background:var(--card2);
+    color:var(--ink2);
+    display:grid;
+    place-items:center;
+    align-content:center;
+    justify-content:center;
+    padding:0;
+    line-height:1;
+    font-size:16px;
+    font-weight:700;
+    overflow:hidden;
+    transition:background .15s ease, color .15s ease, transform .12s ease;
   }
   .ex-icon.cur{ background:var(--blue); color:#fff; }
   .ex-icon.done{ background:var(--green); color:#003018; }
@@ -1348,6 +1365,9 @@
     }
   }
   .home-progress-content{
+    position:relative;
+    z-index:2;
+    pointer-events:auto;
     min-height:248px;
     padding:24px;
     display:flex;
@@ -1414,6 +1434,11 @@
     font-weight:700;
   }
   .home-progress-btn{
+    position:relative;
+    z-index:3;
+    pointer-events:auto;
+    touch-action:manipulation;
+    cursor:pointer;
     margin-top:16px;
     min-height:48px;
     min-width:250px;
@@ -2398,10 +2423,9 @@ function homeProgressAction(){
     return;
   }
 
+  // Главная только открывает меню последнего урока.
+  // Дальше пользователь сам выбирает: продолжить или повторить нужное упражнение.
   openLesson(lesson.id);
-  const total=lesson.wordIds.length;
-  const nextExercise=EX_ORDER.find(key=>!isExDone(lesson.id,key,total)) || 'dictation';
-  setTimeout(()=>startExercise(nextExercise,false),0);
 }
 
 function go(screen){
