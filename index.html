@@ -2675,6 +2675,14 @@ function handleBackupImport(e){
         throw new Error('В резервной копии отсутствуют необходимые данные.');
       }
 
+      if(data.profile && typeof data.profile === 'object'){
+        userProfile = {
+          name: typeof data.profile.name === 'string' ? data.profile.name.slice(0,24) : '',
+          avatar: typeof data.profile.avatar === 'string' ? data.profile.avatar : '🙂'
+        };
+        saveProfile();
+      }
+
       if(!confirm('Восстановить резервную копию?\n\nТекущие мои слова, уроки и прогресс будут заменены данными из файла.')) return;
 
       USER_WORDS=normalizeUserWords(data.userWords);
@@ -2692,6 +2700,7 @@ function handleBackupImport(e){
 
       progress=(data.progress && typeof data.progress==='object') ? data.progress : {};
       state={screen:'menu',activeLessonId:null,editingLessonId:null,exercise:null};
+      renderHomeProfile();
       saveUserWords();
       saveLessons();
       saveProgress();
@@ -2718,11 +2727,13 @@ function resetAllUserData(){
     localStorage.removeItem(LS_LESSONS);
     localStorage.removeItem(LS_STATE);
     localStorage.removeItem(LS_PROGRESS);
+    localStorage.removeItem(LS_PROFILE);
   }catch(e){}
 
   USER_WORDS=[];
   lessons=[];
   progress={};
+  userProfile={name:'',avatar:'🙂'};
   state={screen:'menu',activeLessonId:null,editingLessonId:null,exercise:null};
   refreshWordIndexes();
   go('menu');
@@ -4267,6 +4278,7 @@ async function boot(){
 
   if(state.screen === 'vocab') go('vocab');
   else if(state.screen === 'lessons') go('lessons');
+  else if(state.screen === 'sections') go('sections');
   else go('menu');
 
   // 5. Обработчики.
