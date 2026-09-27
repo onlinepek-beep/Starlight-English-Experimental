@@ -1796,14 +1796,31 @@ function resetLessonProgress(lessonId){
 function reconcileProgress(lessonId, newWordIds){
   const lp = progress[lessonId];
   if(!lp) return;
-  const idSet = new Set(newWordIds);
+
+  // ID слов считаем одинаковыми независимо от типа: 123 === "123".
+  // Это важно для сохранения прогресса при редактировании/импорте уроков.
+  const idSet = new Set(newWordIds.map(id => String(id)));
+
   for(const key of Object.keys(lp)){
     const e = lp[key];
     if(!e) continue;
+
     if(Array.isArray(e.solvedIds)){
-      e.solvedIds = e.solvedIds.filter(id => idSet.has(id));
+      e.solvedIds = e.solvedIds.filter(id => idSet.has(String(id)));
       e.total = newWordIds.length;
-    } else if(e.done){ delete lp[key]; }
+
+      // Старый флаг done мог относиться к прежнему составу урока.
+      // Пересчитываем завершённость только по текущему списку слов.
+      if(e.solvedIds.length >= newWordIds.length && newWordIds.length > 0){
+        e.done = true;
+      }else{
+        delete e.done;
+      }
+    } else if(e.done){
+      // Формат старого прогресса без solvedIds больше нельзя безопасно
+      // считать завершённым после изменения состава урока.
+      delete lp[key];
+    }
   }
   saveProgress();
 }
