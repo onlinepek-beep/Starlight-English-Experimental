@@ -1,52 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <radialGradient id="bg" cx="28%" cy="18%" r="90%">
-      <stop offset="0%" stop-color="#0b66c8"/>
-      <stop offset="34%" stop-color="#06264d"/>
-      <stop offset="72%" stop-color="#020b18"/>
-      <stop offset="100%" stop-color="#00030a"/>
+    <radialGradient id="bg" cx="30%" cy="18%" r="88%">
+      <stop offset="0%" stop-color="#0a4f9e"/>
+      <stop offset="34%" stop-color="#062a58"/>
+      <stop offset="72%" stop-color="#020d1f"/>
+      <stop offset="100%" stop-color="#00040b"/>
     </radialGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#61c8ff"/>
-      <stop offset="45%" stop-color="#0a84ff"/>
-      <stop offset="100%" stop-color="#063779"/>
-    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0a84ff" stop-opacity=".34"/>
+      <stop offset="55%" stop-color="#0a84ff" stop-opacity=".10"/>
+      <stop offset="100%" stop-color="#0a84ff" stop-opacity="0"/>
+    </radialGradient>
     <linearGradient id="star" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="52%" stop-color="#dff7ff"/>
-      <stop offset="100%" stop-color="#4fb7ff"/>
+      <stop offset="55%" stop-color="#e8f8ff"/>
+      <stop offset="100%" stop-color="#52bfff"/>
     </linearGradient>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="10" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <filter id="blur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="22"/>
     </filter>
-    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="5"/>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <clipPath id="clip"><rect x="18" y="18" width="476" height="476" rx="98"/></clipPath>
   </defs>
-  <rect width="512" height="512" rx="108" fill="#000"/>
-  <rect x="18" y="18" width="476" height="476" rx="98" fill="url(#bg)"/>
-  <g clip-path="url(#clip)">
-    <ellipse cx="142" cy="86" rx="230" ry="180" fill="#168cff" opacity=".16" filter="url(#softGlow)"/>
-    <circle cx="318" cy="214" r="122" fill="none" stroke="#0a84ff" stroke-width="12" opacity=".14" filter="url(#softGlow)"/>
-    <circle cx="318" cy="214" r="122" fill="none" stroke="url(#edge)" stroke-width="5" stroke-linecap="round" stroke-dasharray="520 250" transform="rotate(-48 318 214)"/>
-    <g filter="url(#glow)">
-      <path d="M253 97 C265 168 292 199 360 218 C292 229 266 257 253 344 C241 259 216 230 146 218 C217 199 241 168 253 97Z" fill="url(#star)"/>
-    </g>
-    <path d="M145 274 C151 301 161 313 187 320 C161 326 151 338 145 367 C139 338 129 326 103 320 C129 313 139 301 145 274Z" fill="url(#star)" opacity=".95"/>
-    <g fill="#dff8ff">
-      <circle cx="126" cy="154" r="3.6"/>
-      <circle cx="386" cy="120" r="5.5"/>
-      <circle cx="402" cy="214" r="2.7"/>
-      <circle cx="421" cy="96" r="2.2"/>
-      <circle cx="101" cy="386" r="2.4"/>
-      <circle cx="444" cy="402" r="2.8"/>
-      <circle cx="194" cy="404" r="1.9"/>
-    </g>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <ellipse cx="400" cy="300" rx="360" ry="300" fill="url(#halo)" filter="url(#blur)"/>
+  <g transform="translate(512 512) scale(2.15) translate(-253 -220)" filter="url(#glow)">
+    <path d="M253 97 C265 168 292 199 360 218 C292 229 266 257 253 344 C241 259 216 230 146 218 C217 199 241 168 253 97Z" fill="url(#star)"/>
   </g>
-  <rect x="18" y="18" width="476" height="476" rx="98" fill="none" stroke="url(#edge)" stroke-width="4"/>
+  <g transform="translate(210 730) scale(1.18)" fill="url(#star)">
+    <path d="M145 274 C151 301 161 313 187 320 C161 326 151 338 145 367 C139 338 129 326 103 320 C129 313 139 301 145 274Z"/>
+  </g>
+  <g fill="#dff8ff">
+    <circle cx="230" cy="210" r="6"/>
+    <circle cx="800" cy="150" r="9"/>
+    <circle cx="865" cy="360" r="5"/>
+    <circle cx="185" cy="780" r="4"/>
+    <circle cx="820" cy="820" r="5"/>
+  </g>
 </svg>

@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'starlight-v3';
+const CACHE_VERSION = 'starlight-v4';
 const APP_CACHE = CACHE_VERSION + '-app';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
