@@ -505,7 +505,14 @@
   .ex-row:active{background:var(--card2); transform:scale(.99);}
 
   .ex-icon{
-    min-width:40px; height:40px; border-radius:50%;
+    width:44px;
+    min-width:44px;
+    max-width:44px;
+    height:44px;
+    min-height:44px;
+    max-height:44px;
+    flex:0 0 44px;
+    border-radius:13px;
     background:var(--card2); color:var(--ink2);
     display:flex; align-items:center; justify-content:center;
     font-size:16px; font-weight:700;
@@ -1385,7 +1392,7 @@
     color:var(--blue);
     flex:0 0 38px;
   }
-  .home-logo svg{width:100%;height:100%;display:block;}
+  .home-logo img{width:100%;height:100%;display:block;object-fit:contain;}
   .home-brand-text{
     font-family:"Avenir Next","Avenir","Helvetica Neue",Arial,sans-serif;
     font-size:28px;
@@ -1428,18 +1435,20 @@
     box-shadow:var(--home-shadow);
     border:1px solid var(--home-card-border);
   }
-  .home-hero-mountains{
+  .home-hero-art{
     position:absolute;
-    inset:auto 0 0;
-    width:100%;
-    height:100%;
+    inset:0;
     z-index:-1;
     pointer-events:none;
+    background-image:url('./assets/home-hero.svg');
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
   }
-  .mountain-back{fill:var(--home-mountain-back);opacity:.9;}
-  .mountain-front{fill:var(--home-mountain-front);opacity:.96;}
-  .mountain-water{fill:var(--home-mountain-water);}
-  .mountain-stars{fill:rgba(255,255,255,.75);}
+  html[data-theme="light"] .home-hero-art{background-image:url('./assets/home-hero-light.svg');}
+  @media (prefers-color-scheme: light){
+    html[data-theme="system"] .home-hero-art{background-image:url('./assets/home-hero-light.svg');}
+  }
 
   .home-hero-content{
     position:relative;
@@ -1470,6 +1479,17 @@
     overflow:hidden;
     text-overflow:ellipsis;
   }
+  .home-hero-detail{
+    margin-top:3px;
+    color:rgba(255,255,255,.88);
+    font-size:13px;
+    line-height:1.25;
+  }
+  html[data-theme="light"] .home-hero-detail{color:rgba(5,20,45,.82);}
+  @media (prefers-color-scheme: light){
+    html[data-theme="system"] .home-hero-detail{color:rgba(5,20,45,.82);}
+  }
+
   .home-progress-row{
     display:flex;
     align-items:center;
@@ -1541,7 +1561,7 @@
     padding:6px 0;
     color:var(--blue);
     background:none;
-    font:600 15px/1.2 inherit;
+    font:650 17px/1.2 inherit;
     white-space:nowrap;
   }
   .home-all-link span{font-size:21px;line-height:.8;font-weight:400;}
@@ -1578,6 +1598,18 @@
     flex:0 0 32px;
   }
   .home-section-icon svg{display:block;width:100%;height:100%;}
+  .home-text-glyph,
+  .home-number-glyph{
+    display:grid;
+    place-items:center;
+    width:100%;
+    height:100%;
+    font-family:"Avenir Next","Helvetica Neue",Arial,sans-serif;
+    font-weight:500;
+    letter-spacing:-1.5px;
+  }
+  .home-text-glyph{font-size:32px;line-height:1;}
+  .home-number-glyph{font-size:24px;line-height:1;letter-spacing:-1px;}
   .home-section-title{
     margin-top:12px;
     font-size:17px;
@@ -1622,9 +1654,18 @@
     font-size:14px;
   }
   .sections-page-grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:2px 2px 8px;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    overscroll-behavior-x:contain;
+  }
+  .sections-page-grid::-webkit-scrollbar{display:none;}
+  .sections-page-grid .home-section-card{
+    flex:0 0 150px;
+    min-height:132px;
   }
   .sections-future{
     margin-top:12px;
@@ -1652,10 +1693,12 @@
     font-size:12px;
   }
 
+  body.profile-open .tabbar{display:none !important;}
+
   .profile-sheet{
     position:fixed;
     inset:0;
-    z-index:1200;
+    z-index:1500;
     display:flex;
     align-items:flex-end;
     justify-content:center;
@@ -1672,7 +1715,7 @@
     width:min(100%, 560px);
     max-height:min(88vh, 700px);
     overflow:auto;
-    padding:10px 20px calc(20px + env(safe-area-inset-bottom));
+    padding:10px 20px calc(30px + 86px + env(safe-area-inset-bottom));
     border-radius:24px 24px 0 0;
     background:var(--card);
     box-shadow:0 -12px 40px rgba(0,0,0,.24);
@@ -1737,10 +1780,17 @@
     box-shadow:inset 0 0 0 2px var(--blue);
   }
   .profile-actions{
+    position:relative;
+    z-index:3;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:9px;
     margin-top:18px;
+    padding-top:2px;
+  }
+  .profile-actions .btn{
+    min-height:50px;
+    touch-action:manipulation;
   }
 
   /* На небольших экранах сохраняем 2x3 и удобную область нажатия. */
@@ -1758,12 +1808,15 @@
     .home-section-card{min-height:124px;padding:14px;border-radius:18px;}
     .home-section-title{font-size:16px;}
     .home-section-sub{font-size:11.5px;}
+    .home-text-glyph{font-size:31px;}
+    .home-number-glyph{font-size:23px;}
     .profile-avatar-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}
     .profile-avatar{font-size:23px;border-radius:13px;}
   }
 
   /* Планшет: 3 карточки в ряд. */
   @media (min-width:700px){
+    .sections-page-grid .home-section-card{flex:1 1 0;min-width:0;}
     .home-hero{min-height:270px;}
     .home-hero-content{min-height:270px;padding:32px 32px 28px;}
     .home-sections,
@@ -1778,20 +1831,20 @@
   /* ПК: нижняя навигация превращается в левую панель. */
   @media (min-width:1280px) and (min-height:700px){
     .app{
-      max-width:1080px;
-      padding-left:28px;
-      padding-right:28px;
+      max-width:1300px;
+      padding-left:200px;
+      padding-right:30px;
       padding-bottom:48px;
     }
     .home-shell{max-width:1080px;}
     .tabbar{
       position:fixed;
-      left:max(20px, calc(50vw - 660px));
+      left:max(20px, calc(50vw - 640px));
       right:auto;
       top:50%;
       bottom:auto;
-      width:180px;
-      max-width:180px;
+      width:170px;
+      max-width:170px;
       transform:translateY(-50%);
       flex-direction:column;
       align-items:stretch;
@@ -1863,9 +1916,7 @@
       <header class="home-header">
         <button class="home-brand" id="main-title" onclick="onTitleTap()" aria-label="Starlight">
           <span class="home-logo" aria-hidden="true">
-            <svg viewBox="0 0 32 32" fill="none">
-              <path d="M16 2.8l3.45 9.15 9.75.5-7.54 6.2 2.6 9.42L16 22.85l-8.26 5.22 2.6-9.42-7.54-6.2 9.75-.5L16 2.8z" fill="currentColor"/>
-            </svg>
+            <img src="./icons/brand-star.svg" alt="">
           </span>
           <span class="home-brand-text">Starlight</span>
         </button>
@@ -1876,15 +1927,11 @@
       </header>
 
       <section class="home-hero" aria-label="Продолжение обучения">
-        <svg class="home-hero-mountains" viewBox="0 0 900 310" preserveAspectRatio="none" aria-hidden="true">
-          <path class="mountain-back" d="M0 220L120 150l92 44 110-92 87 74 104-86 112 94 96-48 109 50v124H0z"/>
-          <path class="mountain-front" d="M0 248l121-78 80 30 116-113 96 102 85-58 84 43 72-49 146 88v97H0z"/>
-          <path class="mountain-water" d="M0 266c130-24 245-10 370 0s255 12 530-6v55H0z"/>
-          <path class="mountain-stars" d="M95 52h2v2h-2zM166 82h2v2h-2zM305 54h2v2h-2zM448 36h2v2h-2zM588 73h2v2h-2zM727 42h2v2h-2zM812 96h2v2h-2z"/>
-        </svg>
+        <div class="home-hero-art" aria-hidden="true"></div>
         <div class="home-hero-content">
           <div class="home-hero-kicker">Продолжайте учиться</div>
           <div class="home-hero-lesson" id="home-lesson-name">Начните обучение</div>
+          <div class="home-hero-detail" id="home-progress-detail">Диктант · 0 из 0 слов</div>
           <div class="home-progress-row">
             <div class="home-progress-track"><div class="home-progress-value" id="home-progress-value"></div></div>
             <span class="home-progress-text" id="home-progress-text">0%</span>
@@ -2774,16 +2821,15 @@ const HOME_SECTIONS = [
 
 function homeIcon(key){
   const icons = {
-    lessons:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2 12 3l9 5.2L12 13 3 8.2Z"/><path d="M6 10.2V16c2.5 2.3 9.5 2.3 12 0v-5.8"/><path d="M21 9v5"/></svg>',
-    vocab:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.3h6a4 4 0 0 1 4 4v10.2a3 3 0 0 0-3-2.4H3z"/><path d="M21 5.3h-6a4 4 0 0 0-4 4v10.2a3 3 0 0 1 3-2.4h7z"/></svg>',
-    alphabet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 18 9 6l4.5 12"/><path d="M6.1 14h5.8"/><path d="M14 18h5.5"/><path d="M16 14.5 18 8l2 6.5"/><path d="M15.1 12h5.8"/></svg>',
-    numbers:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7.5 7.2 6v12"/><path d="M11 8.2c0-1.5 1.2-2.4 2.9-2.4 1.8 0 3 1 3 2.5 0 1.1-.7 1.9-2.2 3.1L11.3 15h5.9"/><path d="M5 20h14"/></svg>',
-    help:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.7 9.2a2.5 2.5 0 1 1 4.3 1.7c-1.4 1.2-2 1.7-2 3.1"/><path d="M12 17.3h.01"/></svg>',
-    settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Z"/><path d="m19.3 14 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.1a1.8 1.8 0 0 1-3.6 0v-.1a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 1 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.1a1.8 1.8 0 0 1 0-3.6h.1a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 1 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9V1.9a1.8 1.8 0 0 1 3.6 0V2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 1 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.1a1.8 1.8 0 0 1 0 3.6h-.1a1.8 1.8 0 0 0-.9 2Z"/></svg>'
+    lessons:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2 12 3l9 5.2-9 5-9-5Z"/><path d="M6 10.2V16c2.6 2.2 9.4 2.2 12 0v-5.8"/><path d="M21 9v5"/></svg>',
+    vocab:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h6.2A3.8 3.8 0 0 1 13 8.8V20a3 3 0 0 0-3-2H3V5Z"/><path d="M21 5h-6.2A3.8 3.8 0 0 0 11 8.8V20a3 3 0 0 1 3-2h7V5Z"/></svg>',
+    alphabet:'<span class="home-text-glyph">Aa</span>',
+    numbers:'<span class="home-number-glyph">123</span>',
+    help:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.7 9.2a2.5 2.5 0 1 1 4.3 1.7c-1.4 1.2-2 1.7-2 3.1"/><path d="M12 17.2h.01"/></svg>',
+    settings:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="m18.9 13.5.7.4a1.7 1.7 0 0 1-1.7 2.9l-.7-.4a1.7 1.7 0 0 0-2.6 1.5v.8a1.7 1.7 0 0 1-3.4 0v-.8a1.7 1.7 0 0 0-2.6-1.5l-.7.4a1.7 1.7 0 0 1-1.7-2.9l.7-.4a1.7 1.7 0 0 0 0-3L6.2 10a1.7 1.7 0 0 1 1.7-2.9l.7.4a1.7 1.7 0 0 0 2.6-1.5v-.8a1.7 1.7 0 0 1 3.4 0V6a1.7 1.7 0 0 0 2.6 1.5l.7-.4a1.7 1.7 0 0 1 1.7 2.9l-.7.4a1.7 1.7 0 0 0 0 3Z"/></svg>'
   };
   return icons[key] || icons.help;
 }
-
 function loadProfile(){
   try{
     const raw = localStorage.getItem(LS_PROFILE);
@@ -2863,20 +2909,29 @@ function renderHome(){
 
   const lesson=getHomeLesson();
   const nameEl=$('home-lesson-name');
+  const detailEl=$('home-progress-detail');
   const pctEl=$('home-progress-text');
   const valEl=$('home-progress-value');
   const btn=$('home-continue-btn');
 
   if(!lesson){
-    if(nameEl) nameEl.textContent='Создайте первый урок';
+    if(nameEl) nameEl.textContent='Пока нет уроков';
+    if(detailEl) detailEl.textContent='Создайте первый урок, чтобы начать учиться.';
     if(pctEl) pctEl.textContent='0%';
     if(valEl) valEl.style.width='0%';
-    if(btn){ btn.disabled=true; btn.textContent='Создайте урок'; }
+    if(btn){
+      btn.disabled=false;
+      btn.innerHTML='＋ Создать урок';
+    }
     return;
   }
 
-  const pct=getHomeLessonProgress(lesson);
+  const total=lesson.wordIds.length;
+  const solved=Math.min(exSolvedCount(lesson.id,'dictation'), total);
+  const pct=total ? Math.round((solved/total)*100) : 0;
+
   if(nameEl) nameEl.textContent=lesson.name || 'Урок';
+  if(detailEl) detailEl.textContent='Диктант · ' + solved + ' из ' + total + ' слов';
   if(pctEl) pctEl.textContent=pct+'%';
   if(valEl) valEl.style.width=pct+'%';
   if(btn){
@@ -2884,11 +2939,10 @@ function renderHome(){
     btn.innerHTML='Продолжить урок <span aria-hidden="true">›</span>';
   }
 }
-
 function resumeHomeLesson(){
   const lesson=getHomeLesson();
   if(!lesson){
-    go('lessons');
+    openLessonEditor(null);
     return;
   }
   openLesson(lesson.id);
@@ -2897,7 +2951,6 @@ function resumeHomeLesson(){
     startExercise(key,false);
   },0);
 }
-
 function openProfileSheet(){
   const sheet=$('profile-sheet');
   if(!sheet) return;
@@ -2905,11 +2958,13 @@ function openProfileSheet(){
   const avatars=['🙂','🧑‍🎓','🦊','🚀','🐱','🦁','🐼','🦄','🐸','🐨','🐯','🦖'];
   $('profile-avatar-grid').innerHTML=avatars.map((a)=>'<button type="button" class="profile-avatar '+(a===userProfile.avatar?'active':'')+'" data-avatar="'+a+'" onclick="selectProfileAvatar(this.dataset.avatar)" aria-label="Аватар '+a+'">'+a+'</button>').join('');
   sheet.classList.remove('hidden');
+  document.body.classList.add('profile-open');
   setTimeout(()=>$('profile-name')?.focus(),40);
 }
 
 function closeProfileSheet(){
   $('profile-sheet')?.classList.add('hidden');
+  document.body.classList.remove('profile-open');
 }
 
 function selectProfileAvatar(avatar){
