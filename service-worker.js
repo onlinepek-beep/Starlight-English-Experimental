@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'starlight-v2';
+const CACHE_VERSION = 'starlight-v3';
 const APP_CACHE = CACHE_VERSION + '-app';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
@@ -34,12 +34,20 @@ self.addEventListener('activate', event => {
   );
 });
 
+async function putInRuntimeCache(request, response){
+  if(!response || !response.ok) return;
+  try{
+    const cache = await caches.open(RUNTIME_CACHE);
+    const cacheRequest = new Request(request.url, {method:'GET'});
+    await cache.put(cacheRequest, response.clone());
+  }catch(e){}
+}
+
 async function networkFirst(request, fallbackUrl = null){
   try{
-    const response = await fetch(request, { cache: 'no-store' });
+    const response = await fetch(request, {cache:'no-store'});
     if(response && response.ok){
-      const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(request, response.clone());
+      await putInRuntimeCache(request, response);
       return response;
     }
   }catch(e){}
@@ -53,8 +61,8 @@ async function networkFirst(request, fallbackUrl = null){
   }
 
   return new Response('Офлайн: файл ещё не был загружен.', {
-    status: 503,
-    headers: {'Content-Type':'text/plain; charset=utf-8'}
+    status:503,
+    headers:{'Content-Type':'text/plain; charset=utf-8'}
   });
 }
 
@@ -65,14 +73,13 @@ async function cacheFirst(request){
   try{
     const response = await fetch(request);
     if(response && response.ok){
-      const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(request, response.clone());
+      await putInRuntimeCache(request, response);
     }
     return response;
   }catch(e){
     return new Response('Офлайн: ресурс недоступен.', {
-      status: 503,
-      headers: {'Content-Type':'text/plain; charset=utf-8'}
+      status:503,
+      headers:{'Content-Type':'text/plain; charset=utf-8'}
     });
   }
 }
@@ -82,20 +89,16 @@ self.addEventListener('fetch', event => {
   if(request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  const isSameOrigin = url.origin === self.location.origin;
+  if(url.origin !== self.location.origin) return;
 
-  // Страница приложения: сначала сеть, при офлайне используем кэш.
+  // Страница приложения: при наличии сети получаем свежий HTML,
+  // при отсутствии сети используем последнюю сохранённую версию.
   if(request.mode === 'navigate'){
     event.respondWith(networkFirst(request, './index.html'));
     return;
   }
 
-  if(!isSameOrigin){
-    return;
-  }
-
-  // Словарь и manifest должны быстро получать свежую версию,
-  // но сохраняться для офлайн-режима.
+  // Словарь и manifest также обновляются из сети, когда она доступна.
   if(
     url.pathname.endsWith('/data/vocabulary.json') ||
     url.pathname.endsWith('/data/vocabulary-schema.json') ||
@@ -105,12 +108,22 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Аудио: кэшируем только после первого успешного прослушивания.
+  // JS-файлы приложения должны получать свежую версию онлайн,
+  // но оставаться доступными офлайн.
+  if(
+    url.pathname.endsWith('/js/alphabet.js') ||
+    url.pathname.endsWith('/js/numbers.js')
+  ){
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  // Аудио: после первого успешного прослушивания остаётся в локальном кэше.
   if(url.pathname.includes('/audio/')){
     event.respondWith(cacheFirst(request));
     return;
   }
 
-  // Остаток приложения: кэш-first для быстрого запуска.
+  // Остальные локальные ресурсы: быстрый cache-first.
   event.respondWith(cacheFirst(request));
 });
