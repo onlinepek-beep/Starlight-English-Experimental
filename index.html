@@ -1356,13 +1356,6 @@
     transition:transform .12s ease, background .12s ease;
   }
   .home-profile-btn:active{transform:scale(.93); background:var(--card3);}
-  .home-greeting{
-    margin:-4px 4px 14px;
-    color:var(--ink);
-    font-size:20px;
-    font-weight:750;
-    letter-spacing:-.2px;
-  }
   .profile-popover{
     position:fixed;
     inset:0;
@@ -1451,7 +1444,6 @@
   .profile-actions .btn{flex:1;}
   @media (max-width:520px){
     .home-profile-btn{top:4px;}
-    .home-greeting{font-size:19px;}
     .profile-emojis{grid-template-columns:repeat(6,1fr);gap:7px;}
   }
 
@@ -1653,8 +1645,6 @@
       <div class="large-title" id="main-title" onclick="onTitleTap()"><span class="title-word">Starlight<span class="title-star">✦</span></span><span class="title-sub">английский язык</span></div>
       <button class="home-profile-btn" id="home-profile-btn" type="button" aria-label="Профиль" onclick="openProfile()"><span id="home-profile-avatar">🐼</span></button>
     </div>
-    <div class="home-greeting" id="home-greeting">Привет! 👋</div>
-
     <section class="home-progress-card" aria-label="Прогресс последнего урока">
       <div class="home-progress-art" aria-hidden="true"></div>
       <div class="home-progress-overlay" aria-hidden="true"></div>
@@ -2094,8 +2084,8 @@
     </div>
     <div id="lesson-finish" class="finish hidden">
       <div class="emoji-big">🏆</div>
-      <h2>Урок завершён!</h2>
-      <p>Все упражнения пройдены</p>
+      <h2 id="lesson-finish-title">Урок завершён!</h2>
+      <p id="lesson-finish-text">Все упражнения пройдены</p>
       <button class="btn green big" style="width:100%; max-width:360px; margin:0 auto; display:block;" onclick="exitLesson()">К урокам</button>
     </div>
   </div>
@@ -2655,11 +2645,9 @@ function saveProfileData(name, avatar){
 function renderProfileUI(){
   const profile = getProfile();
   const avatar = $('home-profile-avatar');
-  const greeting = $('home-greeting');
   const previewAvatar = $('profile-preview-avatar');
   const previewName = $('profile-preview-name');
   if(avatar) avatar.textContent = profile.avatar;
-  if(greeting) greeting.textContent = profile.name ? 'Привет, ' + profile.name + '! 👋' : 'Привет! 👋';
   if(previewAvatar) previewAvatar.textContent = profile.avatar;
   if(previewName) previewName.textContent = profile.name || 'Ученик';
 
@@ -2740,9 +2728,8 @@ function renderHomeProgress(){
   if(!name || !detail || !fill || !pct || !btn) return;
 
   if(!lesson){
-    const profile = getProfile();
-    name.textContent=profile.name ? profile.name + ', начнём?' : 'Пока нет уроков';
-    detail.textContent=profile.name ? 'Создадим твой первый урок.' : 'Создайте первый урок, чтобы начать учиться.';
+    name.textContent='Пока нет уроков';
+    detail.textContent='Создайте первый урок, чтобы начать учиться.';
     fill.style.width='0%';
     pct.textContent='0%';
     btn.disabled=false;
@@ -3433,7 +3420,13 @@ function checkLessonComplete(){
   if(!currentLesson) return;
   const total = currentLesson.wordIds.length;
   const all = EX_ORDER.every(k => isExDone(currentLesson.id, k, total));
-  if(all){ $('ex-menu').innerHTML = ''; $('lesson-finish').classList.remove('hidden'); }
+  if(all){
+    const profile = getProfile();
+    $('ex-menu').innerHTML = '';
+    $('lesson-finish-title').textContent = 'Урок «' + currentLesson.name + '» завершён!';
+    $('lesson-finish-text').textContent = profile.name ? 'Молодец, ' + profile.name + '! 🎉' : 'Все упражнения пройдены';
+    $('lesson-finish').classList.remove('hidden');
+  }
 }
 function retryExercise(){ startExercise(state.exercise, false); }
 
@@ -4074,15 +4067,14 @@ function finishExercise(complete){
   const emojiEl = $('ex-finish-emoji');
   const titleEl = $('ex-finish-title');
 
-  const profile = getProfile();
   if(done){
     emojiEl.textContent = '🎉';
-    titleEl.textContent = profile.name ? 'Молодец, ' + profile.name + '!' : 'Молодец!';
+    titleEl.textContent = 'Молодец!';
     $('ex-finish-text').textContent = 'Упражнение пройдено';
     retry.classList.add('hidden');
   } else {
     emojiEl.textContent = '🤔';
-    titleEl.textContent = profile.name ? 'Почти получилось, ' + profile.name : 'Почти получилось';
+    titleEl.textContent = 'Почти получилось';
     $('ex-finish-text').textContent = `Пройдено ${solved} / ${total}. Доделать?`;
     retry.classList.remove('hidden');
   }
