@@ -2686,7 +2686,6 @@ function saveProfile(){
   const input = $('profile-name-input');
   const profile = saveProfileData(input ? input.value : '', profileDraftAvatar);
   const avatar = $('home-profile-avatar');
-  const greeting = $('home-greeting');
   if(avatar) avatar.textContent = profile.avatar;
   if(greeting) greeting.textContent = profile.name ? 'Привет, ' + profile.name + '! 👋' : 'Привет! 👋';
   renderHomeProgress();
