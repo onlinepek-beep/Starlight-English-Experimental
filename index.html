@@ -1357,11 +1357,11 @@
     max-width:560px;
   }
   .home-progress-title{
-    font-size:clamp(28px,5vw,40px);
-    line-height:1.04;
+    font-size:clamp(24px,3.8vw,32px);
+    line-height:1.06;
     font-weight:800;
-    letter-spacing:-1px;
-    max-width:360px;
+    letter-spacing:-.7px;
+    max-width:340px;
   }
   .home-progress-lesson{
     margin-top:8px;
@@ -1418,7 +1418,7 @@
   @media (max-width:520px){
     .home-progress-card{min-height:226px;border-radius:18px;}
     .home-progress-content{min-height:226px;padding:20px 18px;}
-    .home-progress-title{font-size:29px;max-width:270px;}
+    .home-progress-title{font-size:25px;max-width:260px;}
     .home-progress-lesson{font-size:14px;}
     .home-progress-detail{font-size:13px;}
     .home-progress-btn{width:100%;min-width:0;}
@@ -2378,8 +2378,15 @@ function renderHomeProgress(){
 
 function homeProgressAction(){
   const lesson=getHomeLastLesson();
-  if(lesson) resumeHomeLesson();
-  else openLessonEditor(null);
+  if(!lesson){
+    openLessonEditor(null);
+    return;
+  }
+
+  openLesson(lesson.id);
+  const total=lesson.wordIds.length;
+  const nextExercise=EX_ORDER.find(key=>!isExDone(lesson.id,key,total)) || 'dictation';
+  setTimeout(()=>startExercise(nextExercise,false),0);
 }
 
 function go(screen){
