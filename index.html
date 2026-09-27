@@ -598,31 +598,78 @@
 
   /* ===== НИЖНЕЕ МЕНЮ ===== */
   .tabbar{
-    position:fixed; left:0; right:0; bottom:0;
-    background:rgba(28,28,30,.86);
-    backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-    border-top:1px solid var(--line);
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:calc(8px + env(safe-area-inset-bottom));
+    max-width:520px;
+    margin:0 auto;
+    background:rgba(44,44,46,.72);
+    backdrop-filter:blur(24px) saturate(180%);
+    -webkit-backdrop-filter:blur(24px) saturate(180%);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:20px;
     display:flex;
     justify-content:center;
-    gap:4px;
-    padding:6px 8px calc(6px + env(safe-area-inset-bottom));
+    gap:2px;
+    padding:6px;
     z-index:500;
-  }
-  @media (hover: none) and (pointer: coarse){
-    .tabbar{ bottom:-8px; padding:6px 8px calc(14px + env(safe-area-inset-bottom)); }
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.35),
+      inset 0 1px 0 rgba(255,255,255,.06);
   }
   .tabbar .tab{
-    background:none; color:var(--ink2);
-    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-    gap:4px; padding:6px 20px; border-radius:12px;
-    font-family:inherit; font-size:11px; font-weight:600; border:none;
-    transition:background .15s, color .15s, transform .1s ease;
+    flex:1;
+    max-width:160px;
+    background:transparent;
+    color:var(--ink2);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:3px;
+    padding:5px 8px 6px;
+    border-radius:15px;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:600;
+    border:none;
+    transition:
+      background .18s ease,
+      color .18s ease,
+      transform .12s ease;
   }
-  .tabbar .tab:active{ transform:scale(.94); }
-  .tabbar .tab.active{ color:var(--blue); background:rgba(10,132,255,.14); }
-  .tabbar .ico{ width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .tabbar .ico svg{ width:100%; height:100%; display:block; }
-  .tabbar .label{ display:block; line-height:1; height:12px; white-space:nowrap; }
+  .tabbar .tab:active{ transform:scale(.95); }
+  .tabbar .tab.active{
+    color:var(--ink);
+    background:rgba(10,132,255,.15);
+  }
+  .tabbar .ico{
+    width:22px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    color:currentColor;
+  }
+  .tabbar .ico svg{
+    width:21px;
+    height:21px;
+    display:block;
+  }
+  .tabbar .tab.active .ico{
+    color:var(--blue);
+  }
+  .tabbar .tab.active .ico svg{
+    stroke-width:2.15;
+  }
+  .tabbar .label{
+    display:block;
+    line-height:1;
+    height:11px;
+    white-space:nowrap;
+  }
 
   /* ===== АНГЛИЙСКИЙ АЛФАВИТ ===== */
   .alphabet-intro{
