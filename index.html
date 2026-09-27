@@ -3332,6 +3332,14 @@ document.addEventListener('DOMContentLoaded', boot);
 <!-- Данные и логика раздела «Алфавит» вынесены в отдельный JS-файл. -->
 <script src="./js/alphabet.js"></script>
 <script src="./js/numbers.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .catch(error => console.error('Service Worker registration failed:', error));
+  });
+}
+</script>
 
 </body>
 </html>
