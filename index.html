@@ -497,8 +497,7 @@
     transition:background .15s ease, color .15s ease;
   }
   .ex-icon.cur{ background:var(--blue); color:#fff; }
-  .ex-icon.done{ background:var(--green); color:#003018; }
-  .ex-icon.star{ font-size:18px; }
+  .ex-icon.done{ background:var(--green); color:#003018; }  .ex-icon.star{ font-size:18px; }
   .ex-icon.done.star{ font-size:16px; }
 
   .ex-main{flex:1; min-width:0;}
@@ -648,80 +647,142 @@
   .stagger > *:nth-child(6){ animation-delay:.30s; }
 
   /* ===== НАСТРОЙКИ ===== */
+  #screen-settings{
+    padding-bottom:10px;
+  }
+  #screen-settings .topbar{
+    margin-bottom:2px;
+  }
   .settings-group-title{
     color:var(--ink2);
-    font-size:12px;
+    font-size:11px;
     font-weight:700;
-    letter-spacing:.5px;
+    letter-spacing:.7px;
     text-transform:uppercase;
-    margin:18px 4px 8px;
+    margin:20px 8px 7px;
+  }
+  #screen-settings .settings-group-title:first-of-type{
+    margin-top:8px;
+  }
+  #screen-settings .card{
+    padding:0;
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid color-mix(in srgb, var(--line) 65%, transparent);
+    box-shadow:0 1px 2px rgba(0,0,0,.22), 0 6px 20px rgba(0,0,0,.14);
   }
   .settings-row{
     display:flex;
     align-items:center;
     gap:12px;
-    padding:14px 16px;
+    min-height:68px;
+    padding:13px 16px;
     border-bottom:1px solid var(--line);
   }
   .settings-row:last-child{border-bottom:none;}
+  .settings-row[style*="display:block"]{
+    min-height:0;
+    padding:16px;
+  }
   .settings-icon{
-    width:30px;
-    height:30px;
-    min-width:30px;
-    border-radius:9px;
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:10px;
     background:var(--card2);
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:15px;
+    font-size:16px;
   }
   .settings-main{flex:1;min-width:0;}
-  .settings-title{font-size:15px;font-weight:600;}
-  .settings-sub{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.35;}
+  .settings-title{
+    color:var(--ink);
+    font-size:15.5px;
+    font-weight:600;
+    line-height:1.25;
+  }
+  .settings-sub{
+    color:var(--ink2);
+    font-size:12.5px;
+    margin-top:3px;
+    line-height:1.38;
+  }
   .settings-action{
-    min-height:40px;
-    border-radius:11px;
+    min-height:38px;
+    min-width:68px;
+    border-radius:10px;
     background:var(--card2);
     color:var(--ink);
     padding:0 12px;
     font:600 13px inherit;
+    transition:transform .12s ease, background .12s ease, opacity .12s ease;
   }
-  .settings-action.primary{background:var(--blue);color:#fff;}
-  .settings-action.danger{background:rgba(255,69,58,.14);color:var(--red);}
+  .settings-action:active{transform:scale(.95);opacity:.8;}
+  .settings-action.primary{
+    background:var(--blue);
+    color:#fff;
+    box-shadow:0 3px 10px rgba(10,132,255,.22);
+  }
+  .settings-action.danger{
+    background:rgba(255,69,58,.10);
+    color:var(--red);
+  }
+  .settings-danger{
+    background:linear-gradient(180deg, rgba(255,69,58,.055), rgba(255,69,58,.025));
+  }
   .theme-options{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:6px;
-    margin-top:10px;
+    margin-top:13px;
+    padding:4px;
+    border-radius:13px;
+    background:var(--card2);
   }
   .theme-option{
-    min-height:40px;
-    border-radius:11px;
-    background:var(--card2);
+    min-height:38px;
+    border-radius:10px;
+    background:transparent;
     color:var(--ink2);
     border:1px solid transparent;
-    font:600 12px inherit;
+    font:600 12.5px inherit;
+    transition:background .15s ease, color .15s ease, box-shadow .15s ease;
   }
   .theme-option.active{
     color:var(--blue);
-    border-color:rgba(10,132,255,.35);
-    background:rgba(10,132,255,.12);
+    background:var(--card);
+    border-color:rgba(10,132,255,.20);
+    box-shadow:0 1px 4px rgba(0,0,0,.16);
   }
   .settings-link{
     color:var(--blue);
     text-decoration:none;
     font-size:13px;
     font-weight:600;
+    padding:8px 0 8px 8px;
   }
   .settings-note{
     color:var(--ink2);
-    font-size:12.5px;
+    font-size:12px;
     line-height:1.45;
-    margin-top:8px;
+    margin:10px 8px 0;
   }
-  .settings-danger{
-    border:1px solid rgba(255,69,58,.22);
-    background:rgba(255,69,58,.05);
+  #screen-settings .settings-row .muted{
+    flex-shrink:0;
+  }
+  @media (max-width:420px){
+    .settings-row{
+      padding-left:14px;
+      padding-right:14px;
+      gap:10px;
+    }
+    .settings-action{
+      min-width:62px;
+      padding:0 10px;
+    }
+    .settings-title{font-size:15px;}
+    .settings-sub{font-size:12px;}
   }
 
   /* ===== НИЖНЕЕ МЕНЮ ===== */
@@ -997,8 +1058,7 @@
     min-width:48px;
     font-size:22px;
     font-weight:800;
-    text-align:center;
-  }
+    text-align:center;  }
   .number-main{
     flex:1;
     min-width:0;
@@ -1497,8 +1557,7 @@ function normalizeWord(raw, sourceOverride){
     letter: english.charAt(0).toUpperCase()
   };
 }
-function normalizeVocabulary(vocabulary){ return vocabulary.map(w => normalizeWord(w, WORD_SOURCE.LIBRARY)); }
-function normalizeUserWords(vocabulary){ return vocabulary.filter(w => w && String(w.english || '').trim()).map(w => normalizeWord(w, WORD_SOURCE.USER)); }
+function normalizeVocabulary(vocabulary){ return vocabulary.map(w => normalizeWord(w, WORD_SOURCE.LIBRARY)); }function normalizeUserWords(vocabulary){ return vocabulary.filter(w => w && String(w.english || '').trim()).map(w => normalizeWord(w, WORD_SOURCE.USER)); }
 const LS_USER_WORDS = 'en6_user_words_v1';
 function loadUserWords(){ try{ const r=localStorage.getItem(LS_USER_WORDS); USER_WORDS=r?normalizeUserWords(JSON.parse(r)||[]):[]; }catch(e){ USER_WORDS=[]; } }
 
@@ -1997,8 +2056,7 @@ function updateVocabTabs(){
   });
 }
 function buildAZ(){
-  const sourceWords = vocabUI.source==='library' ? window.VOCAB_DATA : (vocabUI.source==='user' ? USER_WORDS : WORDS);
-  const present = new Set(sourceWords.map(w=>String(w.english||'').trim().charAt(0).toUpperCase()).filter(Boolean));
+  const sourceWords = vocabUI.source==='library' ? window.VOCAB_DATA : (vocabUI.source==='user' ? USER_WORDS : WORDS);  const present = new Set(sourceWords.map(w=>String(w.english||'').trim().charAt(0).toUpperCase()).filter(Boolean));
   $('az-bar').innerHTML = ['ALL', ...LETTERS].map(L=>{
     const dis=(L!=='ALL' && !present.has(L)) ? 'disabled' : '';
     const act=(vocabUI.letter===L) ? 'active' : '';
@@ -2497,8 +2555,7 @@ function renderExRow(key, lessonId, total, isMain){
   if(done){
     statusHTML = `<span class="ex-status ok">✓</span>`;
     actionHTML = `<button class="btn sec" onclick="event.stopPropagation(); startExercise('${key}', true)">Заново</button>`;
-  } else if(isFixed){ actionHTML = `<span class="chev">›</span>`; }
-  else if(solved > 0){ statusHTML = `<span class="ex-status">${solved}/${total}</span>`; actionHTML = `<span class="chev">›</span>`; }
+  } else if(isFixed){ actionHTML = `<span class="chev">›</span>`; }  else if(solved > 0){ statusHTML = `<span class="ex-status">${solved}/${total}</span>`; actionHTML = `<span class="chev">›</span>`; }
   else { statusHTML = `<span class="ex-status">0/${total}</span>`; actionHTML = `<span class="chev">›</span>`; }
   const rowClick = done ? `onclick="startExercise('${key}', true)"` : `onclick="startExercise('${key}')"`;
   return `<div class="ex-row ${isMain?'main':''}" ${rowClick}>
@@ -2998,244 +3055,3 @@ function renderDictation(){
   const pct = (doneCount / st.total * 100).toFixed(0);
   $('ex-area').innerHTML = `
     <div class="card">
-      <div class="row" style="justify-content:space-between; margin-bottom:10px;">
-        <span class="muted" style="font-size:13px;">${doneCount} / ${st.total}</span>
-        <span class="muted" style="font-size:13px;">Диктант</span>
-      </div>
-      <div class="progress"><i style="width:${pct}%"></i></div>
-      <div class="q" style="margin-top:22px;">${esc(w.translation||'—')}<span class="sub">Введи английское слово</span></div>
-      <input type="text" id="dict-input" placeholder="Type in English…" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
-      <div class="warn hidden" id="dict-warn"></div>
-      <div class="row" style="justify-content:center; margin-top:14px;">
-        <button class="btn big" style="min-width:200px;" onclick="dictCheck()">Проверить</button>
-        <button class="btn sec big" onclick="dictSkip()">Пропустить</button>
-      </div>
-    </div>`;
-  const inp = $('dict-input');
-  inp.addEventListener('paste', e=>e.preventDefault());
-  inp.addEventListener('contextmenu', e=>e.preventDefault());
-  inp.addEventListener('keydown', e=>{
-    if((e.ctrlKey||e.metaKey) && (e.key==='v'||e.key==='V')) e.preventDefault();
-    if(e.key==='Enter'){ e.preventDefault(); dictCheck(); }
-  });
-  inp.addEventListener('input', ()=>{ const w=$('dict-warn'); if(w) w.classList.add('hidden'); });
-  setTimeout(()=>inp.focus(), 50);
-}
-function dictCheck(){
-  const st = dictState;
-  const w = WORDS_BY_ID[st.queue[st.i]];
-  const val = $('dict-input').value.trim();
-  const warn = $('dict-warn');
-  if(!val){ warn.textContent='Введи слово.'; warn.classList.remove('hidden'); return; }
-  if(norm(val) === EASTER_EGG){
-    $('dict-input').disabled = true;
-    if(warn){ warn.textContent = '✅ Верно! Кирилл — король 🎉'; warn.style.color = 'var(--green)'; warn.classList.remove('hidden'); }
-    showEgg();
-    setTimeout(()=>{ markSolved(currentLesson.id, 'dictation', w.id, st.total); st.i++; renderDictation(); }, 1200);
-    return;
-  }
-  if(norm(val) === norm(w.english)){
-    $('dict-input').disabled = true;
-    speakEN(w.english);
-    setTimeout(()=>{ markSolved(currentLesson.id, 'dictation', w.id, st.total); st.i++; renderDictation(); }, 900);
-  } else {
-    warn.textContent='Неверно. Попробуй ещё раз.';
-    warn.style.color = '';
-    warn.classList.remove('hidden');
-    st.queue.push(st.queue[st.i]); st.i++;
-    setTimeout(renderDictation, 600);
-  }
-}
-function dictSkip(){ dictState.i++; renderDictation(); }
-
-function buildStatsHTML(lesson, highlightDictation){
-  const total = lesson.wordIds.length;
-  const rows = [];
-  const exOrder = ['cards','truefalse','pairs','letters','dictation'];
-  const exNames = { cards:'Карточки', truefalse:'Верно / Неверно', pairs:'Собери пару', letters:'Собери слово', dictation:'Диктант' };
-  for(const k of exOrder){
-    let solved;
-    if(EX_FIXED.includes(k)) solved = isExDone(lesson.id, k, total) ? total : 0;
-    else solved = exSolvedCount(lesson.id, k);
-    const isDone = isExDone(lesson.id, k, total);
-    const valCls = (highlightDictation && k==='dictation' && isDone) ? 'green' : (isDone?'green':'');
-    rows.push(`<div class="r"><span class="lbl">${exNames[k]}</span><span class="val ${valCls}">${solved} / ${total}</span></div>`);
-  }
-  return rows.join('');
-}
-function showCelebration(){
-  if(!currentLesson) return;
-  const l = currentLesson;
-  $('celebration-stats').innerHTML = buildStatsHTML(l, true);
-  $('celebration').classList.remove('hidden');
-  window.scrollTo(0,0);
-  $('ex-area').classList.add('hidden');
-  $('ex-finish').classList.add('hidden');
-  $('lesson-finish').classList.add('hidden');
-  $('ex-menu').innerHTML = '';
-  startFireworks();
-}
-function startFireworks(){
-  const box = $('celebration');
-  qsa('.pfx', box).forEach(el => el.remove());
-  fireworksBurst(box, 55);
-  setTimeout(()=>fireworksRain(box, 40), 500);
-  setTimeout(()=>fireworksBurst(box, 35), 1500);
-  setTimeout(()=>fireworksRain(box, 35), 2200);
-}
-const FW_COLORS = ['#0A84FF','#30D158','#FF453A','#FFD60A','#BF5AF2','#FF9F0A','#5AC8FA','#FFFFFF'];
-function fireworksBurst(box, count){
-  for(let i=0;i<count;i++){
-    const p = document.createElement('div');
-    p.className = 'pfx';
-    const angle = Math.random() * Math.PI * 2;
-    const dist  = 100 + Math.random() * 240;
-    const bx = Math.cos(angle) * dist;
-    const by = Math.sin(angle) * dist;
-    const size = 5 + Math.random() * 7;
-    const color = FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)];
-    const dur = 900 + Math.random() * 700;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.background = color;
-    p.style.boxShadow = `0 0 10px ${color}`;
-    p.style.setProperty('--bx', bx + 'px');
-    p.style.setProperty('--by', by + 'px');
-    p.style.animation = `burst ${dur}ms ease-out forwards`;
-    box.appendChild(p);
-    setTimeout(()=>p.remove(), dur + 100);
-  }
-}
-function fireworksRain(box, count){
-  for(let i=0;i<count;i++){
-    const p = document.createElement('div');
-    p.className = 'pfx rain';
-    const x = Math.random() * 100;
-    const size = 5 + Math.random() * 7;
-    const color = FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)];
-    const dur = 2200 + Math.random() * 1600;
-    const delay = Math.random() * 600;
-    const rx = (Math.random() - 0.5) * 120;
-    p.style.left = x + 'vw';
-    p.style.top = '-20px';
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.background = color;
-    p.style.boxShadow = `0 0 8px ${color}`;
-    p.style.setProperty('--rx', rx + 'px');
-    p.style.animation = `fall ${dur}ms linear ${delay}ms forwards`;
-    box.appendChild(p);
-    setTimeout(()=>p.remove(), dur + delay + 100);
-  }
-}
-function celebrationGoLessons(){
-  $('celebration').classList.add('hidden');
-  qsa('.pfx', $('celebration')).forEach(el => el.remove());
-  stopSpeech();
-  currentLesson = null;
-  state.activeLessonId = null; state.exercise = null; saveState();
-  go('lessons');
-}
-function celebrationRetryDictation(){
-  $('celebration').classList.add('hidden');
-  qsa('.pfx', $('celebration')).forEach(el => el.remove());
-  stopSpeech();
-  if(!currentLesson) return;
-  resetEx(currentLesson.id, 'dictation');
-  $('lesson-title').textContent = currentLesson.name;
-  $('lesson-pill').textContent = wordsLabel(currentLesson.wordIds.length);
-  $('lesson-finish').classList.add('hidden');
-  $('ex-finish').classList.add('hidden');
-  renderExMenu();
-  show('screen-lesson');
-  startExercise('dictation', false);
-}
-function finishExercise(complete){
-  $('ex-area').classList.add('hidden'); $('ex-area').innerHTML='';
-  $('ex-finish').classList.remove('hidden');
-  const retry = $('ex-finish-retry');
-  const key = state.exercise;
-  const l = currentLesson;
-  const total = l.wordIds.length;
-  const done = isExDone(l.id, key, total);
-  const solved = exSolvedCount(l.id, key);
-
-  const emojiEl = $('ex-finish-emoji');
-  const titleEl = $('ex-finish-title');
-
-  if(done){
-    emojiEl.textContent = '🎉';
-    titleEl.textContent = 'Молодец!';
-    $('ex-finish-text').textContent = 'Упражнение пройдено';
-    retry.classList.add('hidden');
-  } else {
-    emojiEl.textContent = '🤔';
-    titleEl.textContent = 'Почти получилось';
-    $('ex-finish-text').textContent = `Пройдено ${solved} / ${total}. Доделать?`;
-    retry.classList.remove('hidden');
-  }
-  window.scrollTo(0,0);
-}
-
-/*
- * ============================================================
- * ЗАПУСК ПРИЛОЖЕНИЯ
- * ============================================================
- */
-async function boot(){
-  applyTheme(getTheme());
-  // 1. Словарь — единственное, что критично для запуска.
-  try{
-    await loadVocabulary();
-  }catch(error){
-    console.error('Ошибка загрузки словаря:', error);
-    $('vocab-list').innerHTML =
-      '<div class="muted">Не удалось загрузить словарь. Проверьте data/vocabulary.json.</div>';
-    return;
-  }
-
-  // 2. Индекс слов.
-  loadUserWords();
-  refreshWordIndexes();
-
-  // 3. Сохранённое состояние.
-  loadState();
-  loadLessons();
-  loadProgress();
-
-  // 4. Интерфейс.
-  buildAZ();
-
-  if(state.screen === 'vocab') go('vocab');
-  else if(state.screen === 'lessons') go('lessons');
-  else go('menu');
-
-  // 5. Обработчики.
-  $('vocab-search').addEventListener('input', e => {
-    vocabUI.search = e.target.value;
-    renderVocab();
-  });
-  $('editor-search').addEventListener('input', e => {
-    editor.search = e.target.value;
-    renderEditorResults();
-  });
-  $('editor-name').addEventListener('input', e => {
-    editor.name = e.target.value;
-    updateCount('editor-name', 'editor-name-count', NAME_MAX);
-  });
-  $('import-file').addEventListener('change', handleImportFile);
-  $('user-words-file').addEventListener('change', handleUserWordsImport);
-  $('backup-file').addEventListener('change', handleBackupImport);
-  $('main-title').addEventListener('click', onTitleTap);
-  updateCount('editor-name', 'editor-name-count', NAME_MAX);
-}
-
-document.addEventListener('DOMContentLoaded', boot);
-</script>
-
-<!-- Данные и логика раздела «Алфавит» вынесены в отдельный JS-файл. -->
-<script src="./js/alphabet.js"></script>
-<script src="./js/numbers.js"></script>
-
-</body>
-</html>
