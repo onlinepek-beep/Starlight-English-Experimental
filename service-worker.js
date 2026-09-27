@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'starlight-v5';
+const CACHE_VERSION = 'starlight-v6';
 const APP_CACHE = CACHE_VERSION + '-app';
 const RUNTIME_CACHE = CACHE_VERSION + '-runtime';
 
@@ -10,6 +10,7 @@ const APP_SHELL = [
   './icons/favicon-32.png',
   './assets/home-hero-night.svg',
   './assets/home-hero-day.svg',
+  './assets/help-hero.webp',
   './js/alphabet.js',
   './js/numbers.js',
   './data/vocabulary.json',
